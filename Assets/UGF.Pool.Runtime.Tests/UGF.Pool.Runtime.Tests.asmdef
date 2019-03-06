@@ -1,0 +1,17 @@
+{
+    "name": "UGF.Pool.Runtime.Tests",
+    "references": [
+        "GUID:4a7208dcedb721f4cb663f73aeb24c2b"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
