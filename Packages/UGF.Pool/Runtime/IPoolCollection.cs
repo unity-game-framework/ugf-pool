@@ -2,9 +2,9 @@ using System.Collections;
 
 namespace UGF.Pool.Runtime
 {
-    public interface IPoolCollection : ICollection
+    public interface IPoolCollection : IEnumerable
     {
-        int Capacity { get; }
+        int Count { get; }
         int EnabledCount { get; }
         int DisabledCount { get; }
     }
