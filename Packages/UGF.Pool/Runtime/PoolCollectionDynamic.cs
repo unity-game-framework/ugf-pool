@@ -64,7 +64,7 @@ namespace UGF.Pool.Runtime
         {
             for (int i = 0; i < count; i++)
             {
-                Add(Builder.Build());
+                Add(OnBuild());
             }
         }
 
@@ -87,6 +87,11 @@ namespace UGF.Pool.Runtime
             {
                 Remove();
             }
+        }
+
+        protected virtual TItem OnBuild()
+        {
+            return Builder.Build();
         }
     }
 }
