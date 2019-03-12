@@ -2,28 +2,21 @@ using System;
 using System.Collections.Generic;
 using UGF.Builder.Runtime.GameObjects;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
 
 namespace UGF.Pool.Runtime.GameObjects
 {
     public class GameObjectPoolCollection<TItem> : PoolCollectionDynamic<TItem> where TItem : GameObjectPoolBehaviour
     {
-        public Scene Scene { get; }
-        public new GameObjectBuilder<TItem> Builder { get; }
+        public new IGameObjectBuilder<TItem> Builder { get; }
 
-        public GameObjectPoolCollection(Scene scene, GameObjectBuilder<TItem> builder, IEqualityComparer<TItem> comparer = null) : base(builder, comparer)
+        public GameObjectPoolCollection(IGameObjectBuilder<TItem> builder, IEqualityComparer<TItem> comparer = null) : base(builder, comparer)
         {
-            if (!scene.IsValid()) throw new ArgumentException("The specified scene not valid.", nameof(scene));
-
-            Scene = scene;
             Builder = builder;
         }
 
-        public GameObjectPoolCollection(Scene scene, GameObjectBuilder<TItem> builder, ICollection<TItem> collection, IEqualityComparer<TItem> comparer = null) : base(builder, collection, comparer)
+        public GameObjectPoolCollection(IGameObjectBuilder<TItem> builder, ICollection<TItem> collection, IEqualityComparer<TItem> comparer = null) : base(builder, collection, comparer)
         {
-            if (!scene.IsValid()) throw new ArgumentException("The specified scene not valid.", nameof(scene));
-
-            Scene = scene;
             Builder = builder;
         }
 
@@ -31,21 +24,15 @@ namespace UGF.Pool.Runtime.GameObjects
         {
             if (base.Add(item))
             {
-                item.OnPoolDisable();
-                
+                if (item.IsPoolEnabled())
+                {
+                    item.OnPoolDisable();   
+                }
+
                 return true;
             }
 
             return false;
-        }
-
-        public override TItem Remove()
-        {
-            TItem item = base.Remove();
-
-            item.OnPoolDisable();
-            
-            return item;
         }
 
         public override TItem Enable()
@@ -57,18 +44,40 @@ namespace UGF.Pool.Runtime.GameObjects
             return item;
         }
 
-        public virtual TItem Enable(Vector3 position, Quaternion rotation, Transform parent)
+        public virtual TItem Enable(Vector3 position, Quaternion rotation)
         {
             TItem item = base.Enable();
-            Transform transform = item.transform;
 
-            transform.SetPositionAndRotation(position, rotation);
-            transform.SetParent(parent);
+            item.transform.SetPositionAndRotation(position, rotation);
+            item.OnPoolEnable();
+
+            return item;
+        }
+
+        public virtual TItem Enable(Transform parent, bool worldPositionStays = true)
+        {
+            TItem item = base.Enable();
+
+            item.transform.SetParent(parent, worldPositionStays);
             item.OnPoolEnable();
             
             return item;
         }
         
+        public virtual TItem Enable(Vector3 position, Quaternion rotation, Transform parent, bool worldPositionStays = true)
+        {
+            if (parent == null) throw new ArgumentNullException(nameof(parent));
+            
+            TItem item = base.Enable();
+            Transform transform = item.transform;
+
+            transform.SetPositionAndRotation(position, rotation);
+            transform.SetParent(parent, worldPositionStays);
+            item.OnPoolEnable();
+
+            return item;
+        }
+         
         public override bool Disable(TItem item)
         {
             if (base.Disable(item))
@@ -81,13 +90,23 @@ namespace UGF.Pool.Runtime.GameObjects
             return false;
         }
 
-        protected override TItem OnBuild()
+        public virtual void DestroyAll()
         {
-            TItem item = base.OnBuild();
+            int count = DisabledCount;
 
-            SceneManager.MoveGameObjectToScene(item.gameObject, Scene);
+            for (int i = 0; i < count; i++)
+            {
+                TItem item = Remove();
+                
+                Object.Destroy(item.gameObject);
+            }
+        }
+
+        protected override void OnTrimItem(TItem item)
+        {
+            base.OnTrimItem(item);
             
-            return item;
+            Object.Destroy(item.gameObject);
         }
     }
 }

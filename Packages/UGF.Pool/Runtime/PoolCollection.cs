@@ -82,7 +82,7 @@ namespace UGF.Pool.Runtime
         public PoolCollection(ICollection<TItem> collection, IEqualityComparer<TItem> comparer = null)
         {
             if (collection == null) throw new ArgumentNullException(nameof(collection));
-            
+
             m_items = new HashSet<TItem>(collection, comparer);
             m_enabled = new HashSet<TItem>(comparer);
             m_disabled = new Stack<TItem>(collection);
@@ -112,7 +112,7 @@ namespace UGF.Pool.Runtime
             if (m_items.Add(item))
             {
                 m_disabled.Push(item);
-                
+
                 return true;
             }
 
@@ -124,35 +124,56 @@ namespace UGF.Pool.Runtime
             if (m_disabled.Count == 0) throw new InvalidOperationException("The count of the disabled items is zero.");
 
             TItem item = m_disabled.Pop();
-            
+
             m_items.Remove(item);
-            
+
             return item;
+        }
+
+        public virtual void RemoveAll()
+        {
+            int count = m_disabled.Count;
+            
+            for (int i = 0; i < count; i++)
+            {
+                Remove();
+            }
         }
 
         public virtual TItem Enable()
         {
             if (m_disabled.Count == 0) throw new InvalidOperationException("The count of the disabled items is zero.");
-            
+
             TItem item = m_disabled.Pop();
 
             m_enabled.Add(item);
-            
+
             return item;
         }
 
         public virtual bool Disable(TItem item)
         {
             if (!Contains(item)) throw new ArgumentException("The specified item not from this collection.", nameof(item));
-            
+
             if (m_enabled.Remove(item))
             {
                 m_disabled.Push(item);
-                
+
                 return true;
             }
 
             return false;
+        }
+
+        public virtual void DisableAll()
+        {
+            foreach (TItem item in m_items)
+            {
+                if (IsEnabled(item))
+                {
+                    Disable(item);
+                }
+            }
         }
 
         public virtual void Clear()

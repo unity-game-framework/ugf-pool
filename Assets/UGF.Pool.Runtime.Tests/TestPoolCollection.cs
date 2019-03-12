@@ -161,6 +161,29 @@ namespace UGF.Pool.Runtime.Tests
         }
 
         [Test]
+        public void RemoveAll()
+        {
+            var pool = new PoolCollection<Target>();
+
+            for (int i = 0; i < 5; i++)
+            {
+                pool.Add(new Target());
+            }
+
+            pool.Enable();
+            
+            Assert.AreEqual(5, pool.Count);
+            Assert.AreEqual(1, pool.EnabledCount);
+            Assert.AreEqual(4, pool.DisabledCount);
+            
+            pool.RemoveAll();
+            
+            Assert.AreEqual(1, pool.Count);
+            Assert.AreEqual(1, pool.EnabledCount);
+            Assert.AreEqual(0, pool.DisabledCount);
+        }
+
+        [Test]
         public void Enable()
         {
             var pool = new PoolCollection<Target>();
@@ -194,6 +217,28 @@ namespace UGF.Pool.Runtime.Tests
             Assert.AreEqual(1, pool.DisabledCount);
         }
 
+        [Test]
+        public void DisableAll()
+        {
+            var pool = new PoolCollection<Target>();
+
+            for (int i = 0; i < 5; i++)
+            {
+                pool.Add(new Target());
+                pool.Enable();
+            }
+
+            Assert.AreEqual(5, pool.Count);
+            Assert.AreEqual(5, pool.EnabledCount);
+            Assert.AreEqual(0, pool.DisabledCount);
+            
+            pool.DisableAll();
+            
+            Assert.AreEqual(5, pool.Count);
+            Assert.AreEqual(0, pool.EnabledCount);
+            Assert.AreEqual(5, pool.DisabledCount);
+        }
+        
         [Test]
         public void Clear()
         {
