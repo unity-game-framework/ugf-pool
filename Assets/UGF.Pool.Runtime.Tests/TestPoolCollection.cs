@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using UnityEngine.Profiling;
 
 namespace UGF.Pool.Runtime.Tests
 {
@@ -231,7 +232,7 @@ namespace UGF.Pool.Runtime.Tests
             Assert.AreEqual(5, pool.Count);
             Assert.AreEqual(5, pool.EnabledCount);
             Assert.AreEqual(0, pool.DisabledCount);
-            
+
             pool.DisableAll();
             
             Assert.AreEqual(5, pool.Count);

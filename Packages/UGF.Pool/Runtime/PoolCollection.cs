@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace UGF.Pool.Runtime
 {
@@ -167,11 +168,14 @@ namespace UGF.Pool.Runtime
 
         public virtual void DisableAll()
         {
-            foreach (TItem item in m_items)
+            int count = m_enabled.Count;
+
+            for (int i = 0; i < count; i++)
             {
-                if (IsEnabled(item))
+                foreach (TItem item in m_enabled)
                 {
                     Disable(item);
+                    break;
                 }
             }
         }

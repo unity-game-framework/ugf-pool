@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using UGF.Builder.Runtime;
@@ -54,6 +55,12 @@ namespace UGF.Pool.Runtime.Tests
             Assert.AreEqual(5, pool.Count);
             Assert.AreEqual(0, pool.EnabledCount);
             Assert.AreEqual(5, pool.DisabledCount);
+        }
+
+        [Test]
+        public void DisableAll()
+        {
+            throw new NotImplementedException();
         }
 
         [Test]
