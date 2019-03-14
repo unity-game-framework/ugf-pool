@@ -1,7 +1,9 @@
+using System.Collections;
 using NUnit.Framework;
 using UGF.Builder.Runtime.GameObjects;
 using UGF.Pool.Runtime.GameObjects;
 using UnityEngine;
+using UnityEngine.TestTools;
 using UnityEngine.TestTools.Utils;
 
 namespace UGF.Pool.Runtime.Tests
@@ -96,8 +98,8 @@ namespace UGF.Pool.Runtime.Tests
             Assert.False(behaviour.IsPoolEnabled());
         }
 
-        [Test]
-        public void DestroyAll()
+        [UnityTest]
+        public IEnumerator DestroyAll()
         {
             var builder = new GameObjectBuilder<GameObjectPoolBehaviour>(new GameObject().AddComponent<GameObjectPoolBehaviour>());
             var pool = new GameObjectPoolCollection<GameObjectPoolBehaviour>(builder);
@@ -113,6 +115,8 @@ namespace UGF.Pool.Runtime.Tests
             
             pool.DisableAll();
             pool.DestroyAll();
+
+            yield return null;
             
             Assert.AreEqual(0, pool.Count);
             Assert.AreEqual(0, parent.childCount);

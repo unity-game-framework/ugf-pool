@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using UnityEngine.Profiling;
 
 namespace UGF.Pool.Runtime.Tests
 {
@@ -10,14 +9,14 @@ namespace UGF.Pool.Runtime.Tests
         private class Target
         {
         }
-        
+
         [Test]
         public void Count()
         {
             var pool = new PoolCollection<Target>();
 
             pool.Add(new Target());
-            
+
             Assert.AreEqual(1, pool.Count);
         }
 
@@ -28,7 +27,7 @@ namespace UGF.Pool.Runtime.Tests
 
             pool.Add(new Target());
             pool.Enable();
-            
+
             Assert.AreEqual(1, pool.EnabledCount);
         }
 
@@ -38,7 +37,7 @@ namespace UGF.Pool.Runtime.Tests
             var pool = new PoolCollection<Target>();
 
             pool.Add(new Target());
-            
+
             Assert.AreEqual(1, pool.DisabledCount);
         }
 
@@ -47,7 +46,7 @@ namespace UGF.Pool.Runtime.Tests
         {
             EqualityComparer<Target> comparer = EqualityComparer<Target>.Default;
             var pool = new PoolCollection<Target>(comparer);
-            
+
             Assert.AreSame(comparer, pool.Comparer);
         }
 
@@ -60,7 +59,7 @@ namespace UGF.Pool.Runtime.Tests
             pool.Enable();
 
             int count = pool.Enabled.Count();
-            
+
             Assert.AreEqual(1, count);
         }
 
@@ -72,26 +71,36 @@ namespace UGF.Pool.Runtime.Tests
             pool.Add(new Target());
 
             int count = pool.Disabled.Count();
-            
+
             Assert.AreEqual(1, count);
         }
 
+        [Ignore("Issue #1")]
         [Test]
-        public void PoolCollection()
+        public void CtorWithCapacity()
         {
+            // See https://github.com/unity-game-framework/ugf-pool/issues/1
         }
 
         [Test]
-        public void PoolCollection2()
+        public void CtorWithComparer()
+        {
+            EqualityComparer<Target> comparer = EqualityComparer<Target>.Default;
+            var pool = new PoolCollection<Target>(comparer);
+            
+            Assert.AreEqual(comparer, pool.Comparer);
+        }
+
+        [Test]
+        public void CtorWithCollection()
         {
             var collection = new List<Target> { new Target(), new Target() };
-            EqualityComparer<Target> comparer = EqualityComparer<Target>.Default;
             var pool = new PoolCollection<Target>(collection);
-            
+
             Assert.AreEqual(2, pool.Count);
             Assert.AreEqual(0, pool.EnabledCount);
             Assert.AreEqual(2, pool.DisabledCount);
-            Assert.AreSame(comparer, pool.Comparer);
+            Assert.AreSame(EqualityComparer<Target>.Default, pool.Comparer);
         }
 
         [Test]
@@ -104,7 +113,7 @@ namespace UGF.Pool.Runtime.Tests
 
             bool result0 = pool.Contains(target);
             bool result1 = pool.Contains(null);
-            
+
             Assert.True(result0);
             Assert.False(result1);
         }
@@ -119,7 +128,7 @@ namespace UGF.Pool.Runtime.Tests
             pool.Enable();
 
             bool result0 = pool.IsEnabled(target);
-            
+
             Assert.True(result0);
         }
 
@@ -132,7 +141,7 @@ namespace UGF.Pool.Runtime.Tests
             pool.Add(target);
 
             bool result0 = pool.IsDisabled(target);
-            
+
             Assert.True(result0);
         }
 
@@ -142,7 +151,7 @@ namespace UGF.Pool.Runtime.Tests
             var pool = new PoolCollection<Target>();
 
             pool.Add(new Target());
-            
+
             Assert.AreEqual(1, pool.Count);
         }
 
@@ -153,9 +162,9 @@ namespace UGF.Pool.Runtime.Tests
             var target = new Target();
 
             pool.Add(target);
-            
+
             Target result0 = pool.Remove();
-            
+
             Assert.NotNull(result0);
             Assert.AreSame(result0, target);
             Assert.AreEqual(0, pool.Count);
@@ -172,13 +181,13 @@ namespace UGF.Pool.Runtime.Tests
             }
 
             pool.Enable();
-            
+
             Assert.AreEqual(5, pool.Count);
             Assert.AreEqual(1, pool.EnabledCount);
             Assert.AreEqual(4, pool.DisabledCount);
-            
+
             pool.RemoveAll();
-            
+
             Assert.AreEqual(1, pool.Count);
             Assert.AreEqual(1, pool.EnabledCount);
             Assert.AreEqual(0, pool.DisabledCount);
@@ -193,7 +202,7 @@ namespace UGF.Pool.Runtime.Tests
             pool.Add(target);
 
             Target result0 = pool.Enable();
-            
+
             Assert.NotNull(result0);
             Assert.AreSame(result0, target);
             Assert.AreEqual(1, pool.Count);
@@ -211,7 +220,7 @@ namespace UGF.Pool.Runtime.Tests
             pool.Enable();
 
             bool result0 = pool.Disable(target);
-            
+
             Assert.True(result0);
             Assert.AreEqual(1, pool.Count);
             Assert.AreEqual(0, pool.EnabledCount);
@@ -234,12 +243,12 @@ namespace UGF.Pool.Runtime.Tests
             Assert.AreEqual(0, pool.DisabledCount);
 
             pool.DisableAll();
-            
+
             Assert.AreEqual(5, pool.Count);
             Assert.AreEqual(0, pool.EnabledCount);
             Assert.AreEqual(5, pool.DisabledCount);
         }
-        
+
         [Test]
         public void Clear()
         {
@@ -247,7 +256,7 @@ namespace UGF.Pool.Runtime.Tests
 
             pool.Add(new Target());
             pool.Clear();
-            
+
             Assert.AreEqual(0, pool.Count);
             Assert.AreEqual(0, pool.EnabledCount);
             Assert.AreEqual(0, pool.DisabledCount);
