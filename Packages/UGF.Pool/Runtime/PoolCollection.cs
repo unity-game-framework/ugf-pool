@@ -133,7 +133,7 @@ namespace UGF.Pool.Runtime
         public virtual void RemoveAll()
         {
             int count = m_disabled.Count;
-            
+
             for (int i = 0; i < count; i++)
             {
                 Remove();

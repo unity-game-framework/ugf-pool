@@ -32,7 +32,7 @@ namespace UGF.Pool.Runtime.Tests
             var pool = new GameObjectPoolCollection<GameObjectPoolBehaviour>(builder);
 
             GameObjectPoolBehaviour behaviour = pool.Enable();
-            
+
             Assert.NotNull(behaviour);
             Assert.True(behaviour.IsPoolEnabled());
         }
@@ -44,7 +44,7 @@ namespace UGF.Pool.Runtime.Tests
             var pool = new GameObjectPoolCollection<GameObjectPoolBehaviour>(builder);
 
             GameObjectPoolBehaviour behaviour = pool.Enable(Vector3.one, Quaternion.Euler(Vector3.one));
-            
+
             Assert.NotNull(behaviour);
             Assert.True(behaviour.IsPoolEnabled());
             Assert.AreEqual(Vector3.one, behaviour.transform.position);
@@ -59,7 +59,7 @@ namespace UGF.Pool.Runtime.Tests
             Transform parent = new GameObject().transform;
 
             GameObjectPoolBehaviour behaviour = pool.Enable(parent);
-            
+
             Assert.NotNull(behaviour);
             Assert.True(behaviour.IsPoolEnabled());
             Assert.AreEqual(parent, behaviour.transform.parent);
@@ -71,9 +71,9 @@ namespace UGF.Pool.Runtime.Tests
             var builder = new GameObjectBuilder<GameObjectPoolBehaviour>(new GameObject().AddComponent<GameObjectPoolBehaviour>());
             var pool = new GameObjectPoolCollection<GameObjectPoolBehaviour>(builder);
             Transform parent = new GameObject().transform;
-            
+
             GameObjectPoolBehaviour behaviour = pool.Enable(Vector3.one, Quaternion.Euler(Vector3.one), parent);
-            
+
             Assert.NotNull(behaviour);
             Assert.True(behaviour.IsPoolEnabled());
             Assert.AreEqual(Vector3.one, behaviour.transform.position);
@@ -88,12 +88,12 @@ namespace UGF.Pool.Runtime.Tests
             var pool = new GameObjectPoolCollection<GameObjectPoolBehaviour>(builder);
 
             GameObjectPoolBehaviour behaviour = pool.Enable();
-            
+
             Assert.NotNull(behaviour);
             Assert.True(behaviour.IsPoolEnabled());
 
             bool result0 = pool.Disable(behaviour);
-            
+
             Assert.True(result0);
             Assert.False(behaviour.IsPoolEnabled());
         }
@@ -109,15 +109,15 @@ namespace UGF.Pool.Runtime.Tests
             {
                 pool.Enable(parent);
             }
-            
+
             Assert.AreEqual(10, pool.Count);
             Assert.AreEqual(10, parent.childCount);
-            
+
             pool.DisableAll();
             pool.DestroyAll();
 
             yield return null;
-            
+
             Assert.AreEqual(0, pool.Count);
             Assert.AreEqual(0, parent.childCount);
         }

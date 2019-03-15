@@ -87,7 +87,7 @@ namespace UGF.Pool.Runtime.Tests
         {
             EqualityComparer<Target> comparer = EqualityComparer<Target>.Default;
             var pool = new PoolCollection<Target>(comparer);
-            
+
             Assert.AreEqual(comparer, pool.Comparer);
         }
 

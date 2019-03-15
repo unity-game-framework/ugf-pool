@@ -74,7 +74,7 @@ namespace UGF.Pool.Runtime
             {
                 int count = Count - DefaultCount;
                 int trim = count > TrimCount ? TrimCount : count;
-                
+
                 Trim(trim);
             }
         }
@@ -82,7 +82,7 @@ namespace UGF.Pool.Runtime
         public void Trim(int count)
         {
             if (count > DisabledCount) throw new ArgumentException("The specified count to trim greater than disabled items.", nameof(count));
-            
+
             for (int i = 0; i < count; i++)
             {
                 OnTrimItem(Remove());

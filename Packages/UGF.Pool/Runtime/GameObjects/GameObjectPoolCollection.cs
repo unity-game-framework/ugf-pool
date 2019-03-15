@@ -26,7 +26,7 @@ namespace UGF.Pool.Runtime.GameObjects
             {
                 if (item.IsPoolEnabled())
                 {
-                    item.OnPoolDisable();   
+                    item.OnPoolDisable();
                 }
 
                 return true;
@@ -60,14 +60,14 @@ namespace UGF.Pool.Runtime.GameObjects
 
             item.transform.SetParent(parent, worldPositionStays);
             item.OnPoolEnable();
-            
+
             return item;
         }
-        
+
         public virtual TItem Enable(Vector3 position, Quaternion rotation, Transform parent, bool worldPositionStays = true)
         {
             if (parent == null) throw new ArgumentNullException(nameof(parent));
-            
+
             TItem item = base.Enable();
             Transform transform = item.transform;
 
@@ -77,7 +77,7 @@ namespace UGF.Pool.Runtime.GameObjects
 
             return item;
         }
-         
+
         public override bool Disable(TItem item)
         {
             if (base.Disable(item))
@@ -97,7 +97,7 @@ namespace UGF.Pool.Runtime.GameObjects
             for (int i = 0; i < count; i++)
             {
                 TItem item = Remove();
-                
+
                 Object.Destroy(item.gameObject);
             }
         }
@@ -105,7 +105,7 @@ namespace UGF.Pool.Runtime.GameObjects
         protected override void OnTrimItem(TItem item)
         {
             base.OnTrimItem(item);
-            
+
             Object.Destroy(item.gameObject);
         }
     }

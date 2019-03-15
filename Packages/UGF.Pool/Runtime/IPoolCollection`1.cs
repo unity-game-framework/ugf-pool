@@ -7,7 +7,7 @@ namespace UGF.Pool.Runtime
         IEnumerable<TItem> Enabled { get; }
         IEnumerable<TItem> Disabled { get; }
         IEqualityComparer<TItem> Comparer { get; }
-        
+
         bool Contains(TItem item);
         bool IsEnabled(TItem item);
         bool IsDisabled(TItem item);
