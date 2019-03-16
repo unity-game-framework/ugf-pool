@@ -6,44 +6,23 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.TestTools.Utils;
 
-namespace UGF.Pool.Runtime.Tests
+namespace UGF.Pool.Runtime.Tests.GameObjects
 {
     public class TestGameObjectPoolCollection
     {
         [Test]
-        public void Add()
-        {
-            var builder = new GameObjectBuilder<GameObjectPoolBehaviour>(new GameObject().AddComponent<GameObjectPoolBehaviour>());
-            var pool = new GameObjectPoolCollection<GameObjectPoolBehaviour>(builder);
-            var behaviour = new GameObject().AddComponent<GameObjectPoolBehaviour>();
-
-            Assert.True(behaviour.IsPoolEnabled());
-
-            bool result0 = pool.Add(behaviour);
-
-            Assert.True(result0);
-            Assert.False(behaviour.IsPoolEnabled());
-        }
-
-        [Test]
-        public void Enable()
-        {
-            var builder = new GameObjectBuilder<GameObjectPoolBehaviour>(new GameObject().AddComponent<GameObjectPoolBehaviour>());
-            var pool = new GameObjectPoolCollection<GameObjectPoolBehaviour>(builder);
-
-            GameObjectPoolBehaviour behaviour = pool.Enable();
-
-            Assert.NotNull(behaviour);
-            Assert.True(behaviour.IsPoolEnabled());
-        }
-
-        [Test]
         public void EnableWithPositionAndRotation()
         {
-            var builder = new GameObjectBuilder<GameObjectPoolBehaviour>(new GameObject().AddComponent<GameObjectPoolBehaviour>());
+            var source = new GameObject().AddComponent<GameObjectPoolBehaviour>();
+            
+            source.PoolDisable();
+
+            var builder = new GameObjectBuilder<GameObjectPoolBehaviour>(source);
             var pool = new GameObjectPoolCollection<GameObjectPoolBehaviour>(builder);
 
             GameObjectPoolBehaviour behaviour = pool.Enable(Vector3.one, Quaternion.Euler(Vector3.one));
+
+            behaviour.PoolEnable();
 
             Assert.NotNull(behaviour);
             Assert.True(behaviour.IsPoolEnabled());
@@ -54,12 +33,18 @@ namespace UGF.Pool.Runtime.Tests
         [Test]
         public void EnableWithParent()
         {
-            var builder = new GameObjectBuilder<GameObjectPoolBehaviour>(new GameObject().AddComponent<GameObjectPoolBehaviour>());
+            var source = new GameObject().AddComponent<GameObjectPoolBehaviour>();
+            
+            source.PoolDisable();
+
+            var builder = new GameObjectBuilder<GameObjectPoolBehaviour>(source);
             var pool = new GameObjectPoolCollection<GameObjectPoolBehaviour>(builder);
             Transform parent = new GameObject().transform;
 
             GameObjectPoolBehaviour behaviour = pool.Enable(parent);
 
+            behaviour.PoolEnable();
+            
             Assert.NotNull(behaviour);
             Assert.True(behaviour.IsPoolEnabled());
             Assert.AreEqual(parent, behaviour.transform.parent);
@@ -68,12 +53,18 @@ namespace UGF.Pool.Runtime.Tests
         [Test]
         public void EnableWithPositionAndRotationAndParent()
         {
-            var builder = new GameObjectBuilder<GameObjectPoolBehaviour>(new GameObject().AddComponent<GameObjectPoolBehaviour>());
+            var source = new GameObject().AddComponent<GameObjectPoolBehaviour>();
+            
+            source.PoolDisable();
+
+            var builder = new GameObjectBuilder<GameObjectPoolBehaviour>(source);
             var pool = new GameObjectPoolCollection<GameObjectPoolBehaviour>(builder);
             Transform parent = new GameObject().transform;
 
             GameObjectPoolBehaviour behaviour = pool.Enable(Vector3.one, Quaternion.Euler(Vector3.one), parent);
 
+            behaviour.PoolEnable();
+            
             Assert.NotNull(behaviour);
             Assert.True(behaviour.IsPoolEnabled());
             Assert.AreEqual(Vector3.one, behaviour.transform.position);
@@ -84,15 +75,23 @@ namespace UGF.Pool.Runtime.Tests
         [Test]
         public void Disable()
         {
-            var builder = new GameObjectBuilder<GameObjectPoolBehaviour>(new GameObject().AddComponent<GameObjectPoolBehaviour>());
+            var source = new GameObject().AddComponent<GameObjectPoolBehaviour>();
+            
+            source.PoolDisable();
+
+            var builder = new GameObjectBuilder<GameObjectPoolBehaviour>(source);
             var pool = new GameObjectPoolCollection<GameObjectPoolBehaviour>(builder);
 
             GameObjectPoolBehaviour behaviour = pool.Enable();
 
+            behaviour.PoolEnable();
+            
             Assert.NotNull(behaviour);
             Assert.True(behaviour.IsPoolEnabled());
 
             bool result0 = pool.Disable(behaviour);
+            
+            behaviour.PoolDisable();
 
             Assert.True(result0);
             Assert.False(behaviour.IsPoolEnabled());
@@ -101,7 +100,11 @@ namespace UGF.Pool.Runtime.Tests
         [UnityTest]
         public IEnumerator DestroyAll()
         {
-            var builder = new GameObjectBuilder<GameObjectPoolBehaviour>(new GameObject().AddComponent<GameObjectPoolBehaviour>());
+            var source = new GameObject().AddComponent<GameObjectPoolBehaviour>();
+            
+            source.PoolDisable();
+
+            var builder = new GameObjectBuilder<GameObjectPoolBehaviour>(source);
             var pool = new GameObjectPoolCollection<GameObjectPoolBehaviour>(builder);
             Transform parent = new GameObject().transform;
 

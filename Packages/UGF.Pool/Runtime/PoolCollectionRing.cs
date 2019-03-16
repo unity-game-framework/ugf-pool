@@ -7,7 +7,7 @@ namespace UGF.Pool.Runtime
     {
         private readonly Dictionary<TItem, LinkedListNode<TItem>> m_nodes = new Dictionary<TItem, LinkedListNode<TItem>>();
         private readonly LinkedList<TItem> m_used = new LinkedList<TItem>();
-        
+
         public PoolCollectionRing(IEqualityComparer<TItem> comparer = null) : base(comparer)
         {
         }
@@ -21,7 +21,7 @@ namespace UGF.Pool.Runtime
             if (base.Add(item))
             {
                 m_nodes.Add(item, new LinkedListNode<TItem>(item));
-                
+
                 return true;
             }
 
@@ -33,7 +33,7 @@ namespace UGF.Pool.Runtime
             TItem item = base.Remove();
 
             m_nodes.Remove(item);
-            
+
             return item;
         }
 
@@ -42,18 +42,18 @@ namespace UGF.Pool.Runtime
             if (Count == 0) throw new InvalidOperationException("The count of the items is zero.");
 
             LinkedListNode<TItem> node = null;
-            
+
             if (DisabledCount == 0)
             {
                 node = m_used.Last;
-                
+
                 Disable(node.Value);
             }
-            
+
             TItem item = base.Enable();
-            
+
             m_used.AddFirst(node ?? m_nodes[item]);
-            
+
             return item;
         }
 
@@ -62,7 +62,7 @@ namespace UGF.Pool.Runtime
             if (base.Disable(item))
             {
                 m_used.Remove(m_nodes[item]);
-                
+
                 return true;
             }
 
@@ -72,7 +72,7 @@ namespace UGF.Pool.Runtime
         public override void Clear()
         {
             base.Clear();
-            
+
             m_used.Clear();
             m_nodes.Clear();
         }

@@ -24,7 +24,7 @@ namespace UGF.Pool.Runtime.Tests
 
             bool result0 = pool.Contains(target);
             bool result1 = pool.IsDisabled(target);
-            
+
             Assert.True(result0);
             Assert.True(result1);
         }
@@ -39,11 +39,11 @@ namespace UGF.Pool.Runtime.Tests
             pool.Remove();
 
             bool result0 = pool.Contains(target);
-            
+
             Assert.False(result0);
             Assert.AreEqual(0, pool.Count);
         }
-        
+
         [Test]
         public void Enable()
         {
@@ -55,7 +55,7 @@ namespace UGF.Pool.Runtime.Tests
             Target target0 = pool.Enable();
             Target target1 = pool.Enable();
             Target target2 = pool.Enable();
-            
+
             Assert.AreEqual(1, target0.Value);
             Assert.AreEqual(0, target1.Value);
             Assert.AreEqual(1, target2.Value);
@@ -68,13 +68,13 @@ namespace UGF.Pool.Runtime.Tests
 
             pool.Add(new Target(0));
             pool.Add(new Target(1));
-            
+
             Target target = pool.Enable();
 
             pool.Disable(target);
 
             bool result0 = pool.IsDisabled(target);
-            
+
             Assert.True(result0);
         }
     }
