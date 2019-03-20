@@ -26,5 +26,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Nothing.
 
+## 1.0.0 - 2019-03-20
+- [Commits](https://github.com/unity-game-framework/ugf-pool/compare/86be6be...1.0.0)
+- [Milestone](https://github.com/unity-game-framework/ugf-pool/milestone/1?closed=1)
+
+### Added
+- This is a initial release.
+
 ---
 > Unity Game Framework | Copyright 2019
