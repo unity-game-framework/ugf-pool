@@ -11,7 +11,7 @@ UGF.Pool
 
 ### Dependencies
 
-- N/A
+- [UGF.Builder](https://github.com/unity-game-framework/ugf-builder): `1.1.0`
 
 ### Changelog
 
