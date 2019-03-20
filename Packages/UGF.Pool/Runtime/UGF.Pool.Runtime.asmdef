@@ -1,0 +1,15 @@
+{
+    "name": "UGF.Pool.Runtime",
+    "references": [
+        "GUID:6c7389a7d4bbed54e96eb1e71a69798e"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}

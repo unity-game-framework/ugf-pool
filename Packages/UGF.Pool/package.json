@@ -1,12 +1,14 @@
 {
-    "name": "com.ugf.pool",
-    "displayName": "UGF.Pool",
-    "version": "0.0.0-preview",
-    "unity": "2019.1",
-    "description": "No description.",
-    "author": {
-        "name": "Unity Game Framework",
-        "url": "https://github.com/unity-game-framework"
-    },
-    "dependencies": {}
+  "name": "com.ugf.pool",
+  "displayName": "UGF.Pool",
+  "version": "0.0.0-preview",
+  "unity": "2019.1",
+  "description": "No description.",
+  "author": {
+    "name": "Unity Game Framework",
+    "url": "https://github.com/unity-game-framework"
+  },
+  "dependencies": {
+    "com.ugf.builder": "1.1.0"
+  }
 }
