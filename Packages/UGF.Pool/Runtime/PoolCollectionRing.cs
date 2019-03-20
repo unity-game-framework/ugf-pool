@@ -3,15 +3,27 @@ using System.Collections.Generic;
 
 namespace UGF.Pool.Runtime
 {
+    /// <summary>
+    /// The ring implementation of the <see cref="IPoolCollection{TItem}"/> with ring reuse of the enabled items.
+    /// </summary>
     public class PoolCollectionRing<TItem> : PoolCollection<TItem>
     {
         private readonly Dictionary<TItem, LinkedListNode<TItem>> m_nodes = new Dictionary<TItem, LinkedListNode<TItem>>();
         private readonly LinkedList<TItem> m_used = new LinkedList<TItem>();
 
+        /// <summary>
+        /// Creates pool collection with the specified comparer, if presents.
+        /// </summary>
+        /// <param name="comparer">The equality comparer for items.</param>
         public PoolCollectionRing(IEqualityComparer<TItem> comparer = null) : base(comparer)
         {
         }
 
+        /// <summary>
+        /// Creates pool collection from the specified collection and with specified comparer, if presents.
+        /// </summary>
+        /// <param name="collection">The collection of the items.</param>
+        /// <param name="comparer">The equality comparer for items.</param>
         public PoolCollectionRing(ICollection<TItem> collection, IEqualityComparer<TItem> comparer = null) : base(collection, comparer)
         {
         }

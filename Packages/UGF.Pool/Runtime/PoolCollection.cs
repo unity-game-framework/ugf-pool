@@ -4,13 +4,24 @@ using System.Collections.Generic;
 
 namespace UGF.Pool.Runtime
 {
+    /// <summary>
+    /// The default implementation of the <see cref="IPoolCollection{TItem}"/>.
+    /// </summary>
     public class PoolCollection<TItem> : IPoolCollection<TItem>
     {
         public int Count { get { return m_items.Count; } }
         public int EnabledCount { get { return m_enabled.Count; } }
         public int DisabledCount { get { return m_disabled.Count; } }
         public IEqualityComparer<TItem> Comparer { get { return m_items.Comparer; } }
+        
+        /// <summary>
+        /// Gets the enumerable of the enabled items in collection.
+        /// </summary>
         public EnabledEnumerable Enabled { get { return m_enabledEnumerable ?? (m_enabledEnumerable = new EnabledEnumerable(m_enabled)); } }
+        
+        /// <summary>
+        /// Gets the enumerable of the disabled items in collection.
+        /// </summary>
         public DisabledEnumerable Disabled { get { return m_disabledEnumerable ?? (m_disabledEnumerable = new DisabledEnumerable(m_disabled)); } }
 
         IEnumerable<TItem> IPoolCollection<TItem>.Enabled { get { return m_enabled; } }
@@ -72,6 +83,10 @@ namespace UGF.Pool.Runtime
             }
         }
 
+        /// <summary>
+        /// Creates pool collection with the specified comparer, if presents.
+        /// </summary>
+        /// <param name="comparer">The equality comparer for items.</param>
         public PoolCollection(IEqualityComparer<TItem> comparer = null)
         {
             m_items = new HashSet<TItem>(comparer);
@@ -79,6 +94,11 @@ namespace UGF.Pool.Runtime
             m_disabled = new Stack<TItem>();
         }
 
+        /// <summary>
+        /// Creates pool collection from the specified collection and with specified comparer, if presents.
+        /// </summary>
+        /// <param name="collection">The collection of the items.</param>
+        /// <param name="comparer">The equality comparer for items.</param>
         public PoolCollection(ICollection<TItem> collection, IEqualityComparer<TItem> comparer = null)
         {
             if (collection == null) throw new ArgumentNullException(nameof(collection));
