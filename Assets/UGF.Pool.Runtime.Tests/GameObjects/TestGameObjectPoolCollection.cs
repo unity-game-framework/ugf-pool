@@ -21,11 +21,8 @@ namespace UGF.Pool.Runtime.Tests.GameObjects
 
             GameObjectPoolBehaviour behaviour = pool.Enable();
 
-            behaviour.PoolEnable();
-
             Assert.NotNull(behaviour);
             Assert.True(behaviour.gameObject.activeSelf);
-            Assert.AreEqual(Vector3.one, behaviour.transform.position);
         }
 
         [Test]
@@ -40,14 +37,10 @@ namespace UGF.Pool.Runtime.Tests.GameObjects
 
             GameObjectPoolBehaviour behaviour = pool.Enable();
 
-            behaviour.PoolEnable();
-
             Assert.NotNull(behaviour);
             Assert.True(behaviour.gameObject.activeSelf);
 
             bool result0 = pool.Disable(behaviour);
-
-            behaviour.PoolDisable();
 
             Assert.True(result0);
             Assert.False(behaviour.gameObject.activeSelf);
@@ -68,7 +61,7 @@ namespace UGF.Pool.Runtime.Tests.GameObjects
                 pool.Enable();
             }
 
-            Assert.AreEqual(10, pool.Count);
+            Assert.AreEqual(12, pool.Count);
 
             pool.DisableAll();
             pool.Clear();

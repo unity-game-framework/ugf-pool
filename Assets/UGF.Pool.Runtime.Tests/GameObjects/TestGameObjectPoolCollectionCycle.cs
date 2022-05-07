@@ -19,8 +19,6 @@ namespace UGF.Pool.Runtime.Tests.GameObjects
 
             GameObjectPoolBehaviour behaviour = pool.Enable();
 
-            behaviour.PoolEnable();
-
             Assert.NotNull(behaviour);
             Assert.True(behaviour.gameObject.activeSelf);
         }
@@ -36,14 +34,10 @@ namespace UGF.Pool.Runtime.Tests.GameObjects
 
             GameObjectPoolBehaviour behaviour = pool.Enable();
 
-            behaviour.PoolEnable();
-
             Assert.NotNull(behaviour);
             Assert.True(behaviour.gameObject.activeSelf);
 
             bool result0 = pool.Disable(behaviour);
-
-            behaviour.PoolDisable();
 
             Assert.True(result0);
             Assert.False(behaviour.gameObject.activeSelf);
@@ -56,7 +50,11 @@ namespace UGF.Pool.Runtime.Tests.GameObjects
 
             for (int i = 0; i < 10; i++)
             {
-                pool.Add(new GameObject().AddComponent<GameObjectPoolBehaviour>());
+                var behaviour = new GameObject().AddComponent<GameObjectPoolBehaviour>();
+
+                behaviour.PoolDisable();
+
+                pool.Add(behaviour);
             }
 
             for (int i = 0; i < 10; i++)
