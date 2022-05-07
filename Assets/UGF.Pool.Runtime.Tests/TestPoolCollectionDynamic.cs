@@ -26,9 +26,9 @@ namespace UGF.Pool.Runtime.Tests
             Target target = pool.Enable();
 
             Assert.NotNull(target);
-            Assert.AreEqual(5, pool.Count);
+            Assert.AreEqual(4, pool.Count);
             Assert.AreEqual(1, pool.EnabledCount);
-            Assert.AreEqual(4, pool.DisabledCount);
+            Assert.AreEqual(3, pool.DisabledCount);
         }
 
         [Test]
@@ -37,23 +37,23 @@ namespace UGF.Pool.Runtime.Tests
             var pool = new PoolCollectionDynamic<Target>(new TargetBuilder());
             var items = new List<Target>();
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 5; i++)
             {
                 items.Add(pool.Enable());
             }
 
-            Assert.AreEqual(10, pool.Count);
-            Assert.AreEqual(6, pool.EnabledCount);
-            Assert.AreEqual(4, pool.DisabledCount);
+            Assert.AreEqual(8, pool.Count);
+            Assert.AreEqual(5, pool.EnabledCount);
+            Assert.AreEqual(3, pool.DisabledCount);
 
             for (int i = 0; i < items.Count; i++)
             {
                 pool.Disable(items[i]);
             }
 
-            Assert.AreEqual(5, pool.Count);
+            Assert.AreEqual(4, pool.Count);
             Assert.AreEqual(0, pool.EnabledCount);
-            Assert.AreEqual(5, pool.DisabledCount);
+            Assert.AreEqual(4, pool.DisabledCount);
         }
 
         [Test]
@@ -61,20 +61,20 @@ namespace UGF.Pool.Runtime.Tests
         {
             var pool = new PoolCollectionDynamic<Target>(new TargetBuilder());
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 5; i++)
             {
                 pool.Enable();
             }
 
-            Assert.AreEqual(10, pool.Count);
-            Assert.AreEqual(6, pool.EnabledCount);
-            Assert.AreEqual(4, pool.DisabledCount);
+            Assert.AreEqual(8, pool.Count);
+            Assert.AreEqual(5, pool.EnabledCount);
+            Assert.AreEqual(3, pool.DisabledCount);
 
             pool.DisableAll();
 
-            Assert.AreEqual(5, pool.Count);
+            Assert.AreEqual(4, pool.Count);
             Assert.AreEqual(0, pool.EnabledCount);
-            Assert.AreEqual(5, pool.DisabledCount);
+            Assert.AreEqual(4, pool.DisabledCount);
         }
 
         [Test]
@@ -82,7 +82,7 @@ namespace UGF.Pool.Runtime.Tests
         {
             var pool = new PoolCollectionDynamic<Target>(new TargetBuilder());
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 4; i++)
             {
                 pool.Enable();
             }
@@ -97,15 +97,14 @@ namespace UGF.Pool.Runtime.Tests
         {
             var pool = new PoolCollectionDynamic<Target>(new TargetBuilder());
 
-            pool.Expand();
-            pool.Add(new Target());
+            pool.Expand(10);
 
             bool result0 = pool.IsTrimRequired();
 
             Assert.True(result0);
-            Assert.AreEqual(6, pool.Count);
+            Assert.AreEqual(10, pool.Count);
             Assert.AreEqual(0, pool.EnabledCount);
-            Assert.AreEqual(6, pool.DisabledCount);
+            Assert.AreEqual(10, pool.DisabledCount);
         }
 
         [Test]
@@ -115,7 +114,7 @@ namespace UGF.Pool.Runtime.Tests
 
             pool.Expand();
 
-            Assert.AreEqual(5, pool.Count);
+            Assert.AreEqual(4, pool.Count);
         }
 
         [Test]
@@ -136,7 +135,7 @@ namespace UGF.Pool.Runtime.Tests
             pool.Expand(6);
             pool.Trim();
 
-            Assert.AreEqual(5, pool.Count);
+            Assert.AreEqual(4, pool.Count);
         }
 
         [Test]
