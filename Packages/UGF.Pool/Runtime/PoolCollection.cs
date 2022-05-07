@@ -73,13 +73,14 @@ namespace UGF.Pool.Runtime
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
 
-            if (m_items.Remove(item))
+            if (m_items.Contains(item))
             {
                 if (IsEnabled(item))
                 {
                     Disable(item);
                 }
 
+                m_items.Remove(item);
                 m_disabled.Remove(item);
 
                 OnRemoved(item);
