@@ -57,9 +57,9 @@ namespace UGF.Pool.Runtime.Tests
             Target target1 = pool.Enable();
             Target target2 = pool.Enable();
 
-            Assert.AreEqual(1, target0.Value);
-            Assert.AreEqual(0, target1.Value);
-            Assert.AreEqual(1, target2.Value);
+            Assert.AreEqual(0, target0.Value);
+            Assert.AreEqual(1, target1.Value);
+            Assert.AreEqual(0, target2.Value);
         }
 
         [Test]
