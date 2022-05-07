@@ -1,6 +1,7 @@
 using System.Collections;
 using NUnit.Framework;
 using UGF.Pool.Runtime.GameObjects;
+using UGF.RuntimeTools.Runtime.Contexts;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -15,7 +16,7 @@ namespace UGF.Pool.Runtime.Tests.GameObjects
 
             source.PoolDisable();
 
-            var pool = new GameObjectPoolCollection<GameObjectPoolBehaviour>(() => Object.Instantiate(source));
+            var pool = new GameObjectPoolCollection<GameObjectPoolBehaviour>(_ => Object.Instantiate(source), new Context());
 
             GameObjectPoolBehaviour behaviour = pool.Enable();
 
@@ -30,7 +31,7 @@ namespace UGF.Pool.Runtime.Tests.GameObjects
 
             source.PoolDisable();
 
-            var pool = new GameObjectPoolCollection<GameObjectPoolBehaviour>(() => Object.Instantiate(source));
+            var pool = new GameObjectPoolCollection<GameObjectPoolBehaviour>(_ => Object.Instantiate(source), new Context());
 
             GameObjectPoolBehaviour behaviour = pool.Enable();
 
@@ -50,7 +51,7 @@ namespace UGF.Pool.Runtime.Tests.GameObjects
 
             source.PoolDisable();
 
-            var pool = new GameObjectPoolCollection<GameObjectPoolBehaviour>(() => Object.Instantiate(source));
+            var pool = new GameObjectPoolCollection<GameObjectPoolBehaviour>(_ => Object.Instantiate(source), new Context());
 
             for (int i = 0; i < 10; i++)
             {

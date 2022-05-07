@@ -1,3 +1,4 @@
+using UGF.RuntimeTools.Runtime.Contexts;
 using Object = UnityEngine.Object;
 
 namespace UGF.Pool.Runtime.GameObjects
@@ -6,7 +7,7 @@ namespace UGF.Pool.Runtime.GameObjects
     {
         public bool DestroyOnRemove { get; set; } = true;
 
-        public GameObjectPoolCollection(PoolItemBuildHandler<TItem> builder, int capacity = 4) : base(builder, capacity)
+        public GameObjectPoolCollection(PoolItemBuildHandler<TItem> builder, IContext context, int capacity = 4) : base(builder, context, capacity)
         {
         }
 

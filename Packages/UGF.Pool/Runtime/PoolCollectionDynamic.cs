@@ -1,10 +1,12 @@
 using System;
+using UGF.RuntimeTools.Runtime.Contexts;
 
 namespace UGF.Pool.Runtime
 {
     public class PoolCollectionDynamic<TItem> : PoolCollection<TItem> where TItem : class
     {
         public PoolItemBuildHandler<TItem> Builder { get; }
+        public IContext Context { get; }
         public int DefaultCount { get; set; } = 4;
         public bool ExpandAuto { get; set; } = true;
         public int ExpandCount { get; set; } = 4;
@@ -13,9 +15,10 @@ namespace UGF.Pool.Runtime
         public int TrimCount { get; set; } = 4;
         public int TrimThreshold { get; set; } = 8;
 
-        public PoolCollectionDynamic(PoolItemBuildHandler<TItem> builder, int capacity = 4) : base(capacity)
+        public PoolCollectionDynamic(PoolItemBuildHandler<TItem> builder, IContext context, int capacity = 4) : base(capacity)
         {
             Builder = builder ?? throw new ArgumentNullException(nameof(builder));
+            Context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         protected override TItem OnEnable()
@@ -57,7 +60,7 @@ namespace UGF.Pool.Runtime
         {
             for (int i = 0; i < count; i++)
             {
-                TItem item = Builder.Invoke();
+                TItem item = Builder.Invoke(Context);
 
                 Add(item);
             }
