@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace UGF.Pool.Runtime
@@ -27,6 +28,8 @@ namespace UGF.Pool.Runtime
 
         protected override TItem OnEnable()
         {
+            if (Count == 0) throw new InvalidOperationException("Collection is empty.");
+
             if (DisabledCount == 0)
             {
                 Disable(m_used.Last.Value);

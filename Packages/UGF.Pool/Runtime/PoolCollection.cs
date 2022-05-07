@@ -126,8 +126,6 @@ namespace UGF.Pool.Runtime
 
         public TItem Enable()
         {
-            if (m_items.Count == 0) throw new InvalidOperationException("Collection is empty.");
-
             return OnEnable();
         }
 
@@ -153,6 +151,7 @@ namespace UGF.Pool.Runtime
 
         protected virtual TItem OnEnable()
         {
+            if (m_items.Count == 0) throw new InvalidOperationException("Collection is empty.");
             if (m_disabled.Count == 0) throw new InvalidOperationException("All items enabled already.");
 
             TItem item = GetAnyDisabled();

@@ -8,8 +8,8 @@ namespace UGF.Pool.Runtime
         public IBuilder<TItem> Builder { get; }
         public int DefaultCount { get; set; } = 4;
         public bool ExpandAuto { get; set; } = true;
-        public int ExpandCount { get; set; } = 3;
-        public int ExpandThreshold { get; set; } = 1;
+        public int ExpandCount { get; set; } = 4;
+        public int ExpandThreshold { get; set; } = 0;
         public bool TrimAuto { get; set; } = true;
         public int TrimCount { get; set; } = 4;
         public int TrimThreshold { get; set; } = 8;
@@ -19,14 +19,14 @@ namespace UGF.Pool.Runtime
             Builder = builder ?? throw new ArgumentNullException(nameof(builder));
         }
 
-        protected override void OnEnabled(TItem item)
+        protected override TItem OnEnable()
         {
-            base.OnEnabled(item);
-
             if (ExpandAuto && IsExpandRequired())
             {
                 Expand();
             }
+
+            return base.OnEnable();
         }
 
         protected override void OnDisabled(TItem item)
@@ -41,12 +41,12 @@ namespace UGF.Pool.Runtime
 
         public bool IsExpandRequired()
         {
-            return Count < DefaultCount || DisabledCount == ExpandThreshold;
+            return Count < DefaultCount || DisabledCount <= ExpandThreshold;
         }
 
         public bool IsTrimRequired()
         {
-            return Count > DefaultCount && DisabledCount > TrimThreshold;
+            return Count > DefaultCount && DisabledCount >= TrimThreshold;
         }
 
         public void Expand()
