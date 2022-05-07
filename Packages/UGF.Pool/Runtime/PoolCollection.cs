@@ -120,7 +120,7 @@ namespace UGF.Pool.Runtime
 
             while (m_enabled.Count > 0)
             {
-                Disable(GetAnyDisabled());
+                Disable(GetAnyEnabled());
             }
         }
 
