@@ -2,38 +2,29 @@
 
 UGF.Pool
 
-## Info
+## Information
 
-- **Version**: `1.0.0`
-- **Unity Version**: `2019.1.0`
-- **Scripting Runtime Version**: `.NET 4.x Equivalent`
-- **Api Compatibility Level**: `.NET Standard 2.0`
+- **Version**: `2.0.0-preview`
+- **Unity**: `2021.3`
+- **API Compatibility Level**: `.NET Standard 2.1`
 
 ### Dependencies
 
-- [UGF.Builder](https://github.com/unity-game-framework/ugf-builder): `1.1.0`
+- `com.ugf.runtimetools`: `2.7.0`
+
+
+### Description
+
+Provides tools to work with pool collections.
 
 ### Changelog
 
-- [Full changelog][1]
+- [Full changelog](changelog.md)
 
-### Registries
+### Registry
 
-- [Stable][2]
-- [Develop][3]
-
-## Description
-
-No description.
+Read about where packages stored: [Registry](https://github.com/unity-game-framework/organization/blob/main/docs/registry.md).
 
 ## How to Install
 
-Read about how to install any packages from the `Unity Game Framework` registry: [Install Package][4].
-
----
-> Unity Game Framework | Copyright 2019
-
-[1]: changelog.md
-[2]: https://bintray.com/unity-game-framework/stable/com.ugf.pool
-[3]: https://bintray.com/unity-game-framework/dev/com.ugf.pool
-[4]: https://github.com/unity-game-framework/ugf-documentation/wiki/Install-Package
+Read about how to install any packages from the `Unity Game Framework` registry: [Install Package](https://github.com/unity-game-framework/organization/blob/main/docs/install-packages.md).
