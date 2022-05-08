@@ -58,6 +58,8 @@ namespace UGF.Pool.Runtime
 
         public void Expand(int count)
         {
+            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
+
             for (int i = 0; i < count; i++)
             {
                 TItem item = Builder.Invoke(Context);
@@ -79,6 +81,7 @@ namespace UGF.Pool.Runtime
 
         public void Trim(int count)
         {
+            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
             if (count > DisabledCount) throw new ArgumentException("The specified count to trim greater than disabled items.", nameof(count));
 
             for (int i = 0; i < count; i++)
