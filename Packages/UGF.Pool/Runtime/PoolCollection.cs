@@ -21,6 +21,8 @@ namespace UGF.Pool.Runtime
 
         public PoolCollection(int capacity = 4)
         {
+            if (capacity < 0) throw new ArgumentOutOfRangeException(nameof(capacity));
+
             m_items = new HashSet<TItem>(capacity);
             m_enabled = new HashSet<TItem>(capacity);
             m_disabled = new HashSet<TItem>(capacity);
@@ -41,7 +43,7 @@ namespace UGF.Pool.Runtime
         public bool IsEnabled(TItem item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
-            if (!Contains(item)) throw new ArgumentException("Specified item not from the current collection.");
+            if (!Contains(item)) throw new ArgumentException($"Specified item not from the current collection: '{item}'.");
 
             return m_enabled.Contains(item);
         }
@@ -49,7 +51,7 @@ namespace UGF.Pool.Runtime
         public bool IsDisabled(TItem item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
-            if (!Contains(item)) throw new ArgumentException("Specified item not from the current collection.");
+            if (!Contains(item)) throw new ArgumentException($"Specified item not from the current collection: '{item}'.");
 
             return m_disabled.Contains(item);
         }
@@ -106,7 +108,7 @@ namespace UGF.Pool.Runtime
 
         public void EnableAll()
         {
-            if (m_disabled.Count == 0) throw new InvalidOperationException("All items enabled already.");
+            if (m_disabled.Count == 0) throw new InvalidOperationException("Collection has no disabled items.");
 
             while (m_disabled.Count > 0)
             {
@@ -116,7 +118,7 @@ namespace UGF.Pool.Runtime
 
         public void DisableAll()
         {
-            if (m_enabled.Count == 0) throw new InvalidOperationException("All items disabled already.");
+            if (m_enabled.Count == 0) throw new InvalidOperationException("Collection has no enabled items.");
 
             while (m_enabled.Count > 0)
             {
@@ -132,7 +134,7 @@ namespace UGF.Pool.Runtime
         public bool Disable(TItem item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
-            if (!Contains(item)) throw new ArgumentException("Specified item not from the current collection.");
+            if (!Contains(item)) throw new ArgumentException($"Specified item not from the current collection: '{item}'.");
 
             return OnDisable(item);
         }
@@ -152,7 +154,7 @@ namespace UGF.Pool.Runtime
         protected virtual TItem OnEnable()
         {
             if (m_items.Count == 0) throw new InvalidOperationException("Collection is empty.");
-            if (m_disabled.Count == 0) throw new InvalidOperationException("All items enabled already.");
+            if (m_disabled.Count == 0) throw new InvalidOperationException("Collection has no disabled items.");
 
             TItem item = GetAnyDisabled();
 
