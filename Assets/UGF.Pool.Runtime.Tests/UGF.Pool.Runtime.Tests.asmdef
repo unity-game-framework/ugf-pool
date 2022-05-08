@@ -1,18 +1,23 @@
 {
     "name": "UGF.Pool.Runtime.Tests",
+    "rootNamespace": "",
     "references": [
         "GUID:4a7208dcedb721f4cb663f73aeb24c2b",
-        "GUID:6c7389a7d4bbed54e96eb1e71a69798e"
-    ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
+        "GUID:27619889b8ba8c24980f49ee34dbb44a",
+        "GUID:0acc523941302664db1f4e527237feb3",
+        "GUID:16fde9420ef50f34db61e711e19381dd"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": []
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

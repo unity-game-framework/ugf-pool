@@ -1,9 +1,9 @@
 {
     "name": "UGF.Pool.Runtime",
+    "rootNamespace": "UGF.Pool.Runtime",
     "references": [
-        "GUID:6c7389a7d4bbed54e96eb1e71a69798e"
+        "GUID:16fde9420ef50f34db61e711e19381dd"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
@@ -11,5 +11,6 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": []
+    "versionDefines": [],
+    "noEngineReferences": false
 }

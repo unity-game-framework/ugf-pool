@@ -3,48 +3,27 @@ using UnityEngine;
 
 namespace UGF.Pool.Runtime.GameObjects
 {
-    /// <summary>
-    /// Represents the pool object component behaviour to work with gameobject pools.
-    /// </summary>
     public class GameObjectPoolBehaviour : MonoBehaviour, IPoolObject
     {
+        public event Action Enabled;
+        public event Action Disabled;
+
         public void PoolEnable()
         {
-            if (IsPoolEnabled()) throw new InvalidOperationException("The pool item already enabled.");
+            if (gameObject.activeSelf) throw new InvalidOperationException("Pool object enabled already.");
 
-            OnPoolEnable();
+            gameObject.SetActive(true);
+
+            Enabled?.Invoke();
         }
 
         public void PoolDisable()
         {
-            if (!IsPoolEnabled()) throw new InvalidOperationException("The pool item already disabled.");
+            if (!gameObject.activeSelf) throw new InvalidOperationException("Pool object disabled already.");
 
-            OnPoolDisable();
-        }
-
-        /// <summary>
-        /// Determines whether this gameobject is enabled.
-        /// </summary>
-        /// <returns></returns>
-        public virtual bool IsPoolEnabled()
-        {
-            return gameObject.activeSelf;
-        }
-
-        /// <summary>
-        /// Occurs when pool enabled.
-        /// </summary>
-        protected virtual void OnPoolEnable()
-        {
-            gameObject.SetActive(true);
-        }
-
-        /// <summary>
-        /// Occurs then pool disabled.
-        /// </summary>
-        protected virtual void OnPoolDisable()
-        {
             gameObject.SetActive(false);
+
+            Disabled?.Invoke();
         }
     }
 }

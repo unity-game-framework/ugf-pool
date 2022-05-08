@@ -2,7 +2,7 @@ using NUnit.Framework;
 
 namespace UGF.Pool.Runtime.Tests
 {
-    public class TestPoolCollectionRing
+    public class TestPoolCollectionCycle
     {
         public class Target
         {
@@ -17,7 +17,7 @@ namespace UGF.Pool.Runtime.Tests
         [Test]
         public void Add()
         {
-            var pool = new PoolCollectionRing<Target>();
+            var pool = new PoolCollectionCycle<Target>();
             var target = new Target(0);
 
             pool.Add(target);
@@ -32,11 +32,11 @@ namespace UGF.Pool.Runtime.Tests
         [Test]
         public void Remove()
         {
-            var pool = new PoolCollectionRing<Target>();
+            var pool = new PoolCollectionCycle<Target>();
             var target = new Target(0);
 
             pool.Add(target);
-            pool.Remove();
+            pool.Remove(target);
 
             bool result0 = pool.Contains(target);
 
@@ -47,27 +47,29 @@ namespace UGF.Pool.Runtime.Tests
         [Test]
         public void Enable()
         {
-            var pool = new PoolCollectionRing<Target>();
-
-            pool.Add(new Target(0));
-            pool.Add(new Target(1));
+            var pool = new PoolCollectionCycle<Target>
+            {
+                new Target(0),
+                new Target(1)
+            };
 
             Target target0 = pool.Enable();
             Target target1 = pool.Enable();
             Target target2 = pool.Enable();
 
-            Assert.AreEqual(1, target0.Value);
-            Assert.AreEqual(0, target1.Value);
-            Assert.AreEqual(1, target2.Value);
+            Assert.AreEqual(0, target0.Value);
+            Assert.AreEqual(1, target1.Value);
+            Assert.AreEqual(0, target2.Value);
         }
 
         [Test]
         public void Disable()
         {
-            var pool = new PoolCollectionRing<Target>();
-
-            pool.Add(new Target(0));
-            pool.Add(new Target(1));
+            var pool = new PoolCollectionCycle<Target>
+            {
+                new Target(0),
+                new Target(1)
+            };
 
             Target target = pool.Enable();
 

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using NUnit.Framework;
-using UGF.Builder.Runtime;
+using UGF.RuntimeTools.Runtime.Contexts;
 
 namespace UGF.Pool.Runtime.Tests
 {
@@ -10,79 +10,71 @@ namespace UGF.Pool.Runtime.Tests
         {
         }
 
-        private class TargetBuilder : BuilderBase<Target>
-        {
-            public override Target Build()
-            {
-                return new Target();
-            }
-        }
-
         [Test]
         public void Enable()
         {
-            var pool = new PoolCollectionDynamic<Target>(new TargetBuilder());
+            var pool = new PoolCollectionDynamic<Target>(_ => new Target(), new Context());
 
             Target target = pool.Enable();
 
             Assert.NotNull(target);
-            Assert.AreEqual(5, pool.Count);
+            Assert.AreEqual(4, pool.Count);
             Assert.AreEqual(1, pool.EnabledCount);
-            Assert.AreEqual(4, pool.DisabledCount);
+            Assert.AreEqual(3, pool.DisabledCount);
         }
 
         [Test]
         public void Disable()
         {
-            var pool = new PoolCollectionDynamic<Target>(new TargetBuilder());
+            var pool = new PoolCollectionDynamic<Target>(_ => new Target(), new Context());
             var items = new List<Target>();
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 5; i++)
             {
                 items.Add(pool.Enable());
             }
 
-            Assert.AreEqual(10, pool.Count);
-            Assert.AreEqual(6, pool.EnabledCount);
-            Assert.AreEqual(4, pool.DisabledCount);
+            Assert.AreEqual(8, pool.Count);
+            Assert.AreEqual(5, pool.EnabledCount);
+            Assert.AreEqual(3, pool.DisabledCount);
 
             for (int i = 0; i < items.Count; i++)
             {
                 pool.Disable(items[i]);
             }
 
-            Assert.AreEqual(5, pool.Count);
+            Assert.AreEqual(4, pool.Count);
             Assert.AreEqual(0, pool.EnabledCount);
-            Assert.AreEqual(5, pool.DisabledCount);
+            Assert.AreEqual(4, pool.DisabledCount);
         }
 
         [Test]
         public void DisableAll()
         {
-            var pool = new PoolCollectionDynamic<Target>(new TargetBuilder());
+            var pool = new PoolCollectionDynamic<Target>(_ => new Target(), new Context());
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 5; i++)
             {
                 pool.Enable();
             }
 
-            Assert.AreEqual(10, pool.Count);
-            Assert.AreEqual(6, pool.EnabledCount);
-            Assert.AreEqual(4, pool.DisabledCount);
+            Assert.AreEqual(8, pool.Count);
+            Assert.AreEqual(5, pool.EnabledCount);
+            Assert.AreEqual(3, pool.DisabledCount);
 
             pool.DisableAll();
 
-            Assert.AreEqual(5, pool.Count);
+            Assert.AreEqual(4, pool.Count);
             Assert.AreEqual(0, pool.EnabledCount);
-            Assert.AreEqual(5, pool.DisabledCount);
+            Assert.AreEqual(4, pool.DisabledCount);
         }
 
         [Test]
         public void IsExpandRequired()
         {
-            var pool = new PoolCollectionDynamic<Target>(new TargetBuilder());
+            var pool = new PoolCollectionDynamic<Target>(_ => new Target(), new Context());
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 4; i++)
             {
                 pool.Enable();
             }
@@ -95,33 +87,32 @@ namespace UGF.Pool.Runtime.Tests
         [Test]
         public void IsTrimRequired()
         {
-            var pool = new PoolCollectionDynamic<Target>(new TargetBuilder());
+            var pool = new PoolCollectionDynamic<Target>(_ => new Target(), new Context());
 
-            pool.Expand();
-            pool.Add(new Target());
+            pool.Expand(10);
 
             bool result0 = pool.IsTrimRequired();
 
             Assert.True(result0);
-            Assert.AreEqual(6, pool.Count);
+            Assert.AreEqual(10, pool.Count);
             Assert.AreEqual(0, pool.EnabledCount);
-            Assert.AreEqual(6, pool.DisabledCount);
+            Assert.AreEqual(10, pool.DisabledCount);
         }
 
         [Test]
         public void Expand()
         {
-            var pool = new PoolCollectionDynamic<Target>(new TargetBuilder());
+            var pool = new PoolCollectionDynamic<Target>(_ => new Target(), new Context());
 
             pool.Expand();
 
-            Assert.AreEqual(5, pool.Count);
+            Assert.AreEqual(4, pool.Count);
         }
 
         [Test]
         public void ExpandWithCount()
         {
-            var pool = new PoolCollectionDynamic<Target>(new TargetBuilder());
+            var pool = new PoolCollectionDynamic<Target>(_ => new Target(), new Context());
 
             pool.Expand(8);
 
@@ -131,18 +122,18 @@ namespace UGF.Pool.Runtime.Tests
         [Test]
         public void Trim()
         {
-            var pool = new PoolCollectionDynamic<Target>(new TargetBuilder());
+            var pool = new PoolCollectionDynamic<Target>(_ => new Target(), new Context());
 
             pool.Expand(6);
             pool.Trim();
 
-            Assert.AreEqual(5, pool.Count);
+            Assert.AreEqual(4, pool.Count);
         }
 
         [Test]
         public void TrimWithCount()
         {
-            var pool = new PoolCollectionDynamic<Target>(new TargetBuilder());
+            var pool = new PoolCollectionDynamic<Target>(_ => new Target(), new Context());
 
             pool.Expand(10);
             pool.Trim(4);

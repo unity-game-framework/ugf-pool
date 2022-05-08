@@ -1,127 +1,73 @@
 using System;
-using System.Collections.Generic;
-using UGF.Builder.Runtime;
+using UGF.RuntimeTools.Runtime.Contexts;
 
 namespace UGF.Pool.Runtime
 {
-    /// <summary>
-    /// The dynamic implementation of the <see cref="IPoolCollection{TItem}"/> with dynamic expanding and trimming.
-    /// </summary>
-    public class PoolCollectionDynamic<TItem> : PoolCollection<TItem>
+    public class PoolCollectionDynamic<TItem> : PoolCollection<TItem> where TItem : class
     {
-        /// <summary>
-        /// Gets the builder of the pool item.
-        /// </summary>
-        public IBuilder<TItem> Builder { get; }
-        
-        /// <summary>
-        /// Gets or sets default count of items in collection.
-        /// </summary>
-        public int DefaultCount { get; set; } = 5;
-        
-        /// <summary>
-        /// Gets or sets value that determines whether to automatically expand collection when its required.
-        /// </summary>
-        public bool AutoExpand { get; set; } = true;
-        
-        /// <summary>
-        /// Gets or sets value that determines whether to automatically trim collection when its allowed.
-        /// </summary>
-        public bool AutoTrim { get; set; } = true;
-        
-        /// <summary>
-        /// Gets or sets the default expand count.
-        /// </summary>
-        public int ExpandCount { get; set; } = 5;
-        
-        /// <summary>
-        /// Gets or sets the default trim count.
-        /// </summary>
-        public int TrimCount { get; set; } = 5;
-        
-        /// <summary>
-        /// Creates the pool collection with the specified builder and comparer, if presents.
-        /// </summary>
-        /// <param name="builder">The builder of the items.</param>
-        /// <param name="comparer">The equality comparer for items.</param>
-        public PoolCollectionDynamic(IBuilder<TItem> builder, IEqualityComparer<TItem> comparer = null) : base(comparer)
+        public PoolItemBuildHandler<TItem> Builder { get; }
+        public IContext Context { get; }
+        public int DefaultCount { get; set; } = 4;
+        public bool ExpandAuto { get; set; } = true;
+        public int ExpandCount { get; set; } = 4;
+        public int ExpandThreshold { get; set; } = 0;
+        public bool TrimAuto { get; set; } = true;
+        public int TrimCount { get; set; } = 4;
+        public int TrimThreshold { get; set; } = 8;
+
+        public PoolCollectionDynamic(PoolItemBuildHandler<TItem> builder, IContext context, int capacity = 4) : base(capacity)
         {
             Builder = builder ?? throw new ArgumentNullException(nameof(builder));
+            Context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        /// <summary>
-        /// Creates the pool collection with the specified builder and items from the specified collection, and comparer, if presents.
-        /// </summary>
-        /// <param name="builder">The builder of the items.</param>
-        /// <param name="collection">The collection of the items.</param>
-        /// <param name="comparer">The equality comparer for items.</param>
-        public PoolCollectionDynamic(IBuilder<TItem> builder, ICollection<TItem> collection, IEqualityComparer<TItem> comparer = null) : base(collection, comparer)
+        protected override TItem OnEnable()
         {
-            Builder = builder ?? throw new ArgumentNullException(nameof(builder));
-        }
-
-        public override TItem Enable()
-        {
-            if (AutoExpand && IsExpandRequired())
+            if (ExpandAuto && IsExpandRequired())
             {
                 Expand();
             }
 
-            return base.Enable();
+            return base.OnEnable();
         }
 
-        public override bool Disable(TItem item)
+        protected override void OnDisabled(TItem item)
         {
-            bool result = base.Disable(item);
+            base.OnDisabled(item);
 
-            if (AutoTrim && IsTrimRequired())
+            if (TrimAuto && IsTrimRequired())
             {
                 Trim();
             }
-
-            return result;
         }
 
-        /// <summary>
-        /// Determines whether expand of the collection is required.
-        /// </summary>
-        public virtual bool IsExpandRequired()
+        public bool IsExpandRequired()
         {
-            return Count < DefaultCount || DisabledCount == 0;
+            return Count < DefaultCount || DisabledCount <= ExpandThreshold;
         }
 
-        /// <summary>
-        /// Determines whether trim of the collection is required.
-        /// </summary>
-        /// <returns></returns>
-        public virtual bool IsTrimRequired()
+        public bool IsTrimRequired()
         {
-            return Count > DefaultCount && DisabledCount > TrimCount;
+            return Count > DefaultCount && DisabledCount >= TrimThreshold;
         }
 
-        /// <summary>
-        /// Expands collection with default expand count.
-        /// </summary>
         public void Expand()
         {
             Expand(ExpandCount);
         }
 
-        /// <summary>
-        /// Expands collection with the specified expand count.
-        /// </summary>
-        /// <param name="count">The count of items to add to collection.</param>
         public void Expand(int count)
         {
+            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
+
             for (int i = 0; i < count; i++)
             {
-                Add(OnExpandItem());
+                TItem item = Builder.Invoke(Context);
+
+                Add(item);
             }
         }
 
-        /// <summary>
-        /// Trims collection with default trim count.
-        /// </summary>
         public void Trim()
         {
             if (Count > DefaultCount)
@@ -133,34 +79,17 @@ namespace UGF.Pool.Runtime
             }
         }
 
-        /// <summary>
-        /// Trims collection with the specified trim count.
-        /// </summary>
-        /// <param name="count">The count of items to remove from collection.</param>
         public void Trim(int count)
         {
+            if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
             if (count > DisabledCount) throw new ArgumentException("The specified count to trim greater than disabled items.", nameof(count));
 
             for (int i = 0; i < count; i++)
             {
-                OnTrimItem(Remove());
+                TItem item = GetAnyDisabled();
+
+                Remove(item);
             }
-        }
-
-        /// <summary>
-        /// Occurs when collection builds a new item to expand collection.
-        /// </summary>
-        protected virtual TItem OnExpandItem()
-        {
-            return Builder.Build();
-        }
-
-        /// <summary>
-        /// Occurs when collection remove item to trim collection.
-        /// </summary>
-        /// <param name="item">The removed item from collection.</param>
-        protected virtual void OnTrimItem(TItem item)
-        {
         }
     }
 }
