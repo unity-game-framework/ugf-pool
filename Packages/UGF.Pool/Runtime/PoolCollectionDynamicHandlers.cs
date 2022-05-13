@@ -8,6 +8,14 @@ namespace UGF.Pool.Runtime
         public PoolItemBuildHandler<TItem> BuildHandler { get; }
         public PoolItemDestroyHandler<TItem> DestroyHandler { get; }
 
+        public PoolCollectionDynamicHandlers(PoolItemBuildHandler<TItem> buildHandler, int capacity = 4) : this(new Context(), buildHandler, (_, _) => { }, capacity)
+        {
+        }
+
+        public PoolCollectionDynamicHandlers(IContext context, PoolItemBuildHandler<TItem> buildHandler, int capacity = 4) : this(context, buildHandler, (_, _) => { }, capacity)
+        {
+        }
+
         public PoolCollectionDynamicHandlers(IContext context, PoolItemBuildHandler<TItem> buildHandler, PoolItemDestroyHandler<TItem> destroyHandler, int capacity = 4) : base(context, capacity)
         {
             BuildHandler = buildHandler ?? throw new ArgumentNullException(nameof(buildHandler));
