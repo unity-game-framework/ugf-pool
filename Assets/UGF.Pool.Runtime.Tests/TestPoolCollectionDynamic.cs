@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using NUnit.Framework;
-using UGF.RuntimeTools.Runtime.Contexts;
 
 namespace UGF.Pool.Runtime.Tests
 {
@@ -13,7 +12,7 @@ namespace UGF.Pool.Runtime.Tests
         [Test]
         public void Enable()
         {
-            var pool = new PoolCollectionDynamic<Target>(_ => new Target(), new Context());
+            var pool = new PoolCollectionDynamicHandlers<Target>(_ => new Target());
 
             Target target = pool.Enable();
 
@@ -26,7 +25,7 @@ namespace UGF.Pool.Runtime.Tests
         [Test]
         public void Disable()
         {
-            var pool = new PoolCollectionDynamic<Target>(_ => new Target(), new Context());
+            var pool = new PoolCollectionDynamicHandlers<Target>(_ => new Target());
             var items = new List<Target>();
 
             for (int i = 0; i < 5; i++)
@@ -51,7 +50,7 @@ namespace UGF.Pool.Runtime.Tests
         [Test]
         public void DisableAll()
         {
-            var pool = new PoolCollectionDynamic<Target>(_ => new Target(), new Context());
+            var pool = new PoolCollectionDynamicHandlers<Target>(_ => new Target());
 
             for (int i = 0; i < 5; i++)
             {
@@ -72,7 +71,7 @@ namespace UGF.Pool.Runtime.Tests
         [Test]
         public void IsExpandRequired()
         {
-            var pool = new PoolCollectionDynamic<Target>(_ => new Target(), new Context());
+            var pool = new PoolCollectionDynamicHandlers<Target>(_ => new Target());
 
             for (int i = 0; i < 4; i++)
             {
@@ -87,7 +86,7 @@ namespace UGF.Pool.Runtime.Tests
         [Test]
         public void IsTrimRequired()
         {
-            var pool = new PoolCollectionDynamic<Target>(_ => new Target(), new Context());
+            var pool = new PoolCollectionDynamicHandlers<Target>(_ => new Target());
 
             pool.Expand(10);
 
@@ -102,7 +101,7 @@ namespace UGF.Pool.Runtime.Tests
         [Test]
         public void Expand()
         {
-            var pool = new PoolCollectionDynamic<Target>(_ => new Target(), new Context());
+            var pool = new PoolCollectionDynamicHandlers<Target>(_ => new Target());
 
             pool.Expand();
 
@@ -112,7 +111,7 @@ namespace UGF.Pool.Runtime.Tests
         [Test]
         public void ExpandWithCount()
         {
-            var pool = new PoolCollectionDynamic<Target>(_ => new Target(), new Context());
+            var pool = new PoolCollectionDynamicHandlers<Target>(_ => new Target());
 
             pool.Expand(8);
 
@@ -122,7 +121,7 @@ namespace UGF.Pool.Runtime.Tests
         [Test]
         public void Trim()
         {
-            var pool = new PoolCollectionDynamic<Target>(_ => new Target(), new Context());
+            var pool = new PoolCollectionDynamicHandlers<Target>(_ => new Target());
 
             pool.Expand(6);
             pool.Trim();
@@ -133,7 +132,7 @@ namespace UGF.Pool.Runtime.Tests
         [Test]
         public void TrimWithCount()
         {
-            var pool = new PoolCollectionDynamic<Target>(_ => new Target(), new Context());
+            var pool = new PoolCollectionDynamicHandlers<Target>(_ => new Target());
 
             pool.Expand(10);
             pool.Trim(4);

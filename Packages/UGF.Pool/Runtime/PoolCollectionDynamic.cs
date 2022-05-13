@@ -3,9 +3,8 @@ using UGF.RuntimeTools.Runtime.Contexts;
 
 namespace UGF.Pool.Runtime
 {
-    public class PoolCollectionDynamic<TItem> : PoolCollection<TItem> where TItem : class
+    public abstract class PoolCollectionDynamic<TItem> : PoolCollection<TItem> where TItem : class
     {
-        public PoolItemBuildHandler<TItem> Builder { get; }
         public IContext Context { get; }
         public int DefaultCount { get; set; } = 4;
         public bool ExpandAuto { get; set; } = true;
@@ -15,30 +14,9 @@ namespace UGF.Pool.Runtime
         public int TrimCount { get; set; } = 4;
         public int TrimThreshold { get; set; } = 8;
 
-        public PoolCollectionDynamic(PoolItemBuildHandler<TItem> builder, IContext context, int capacity = 4) : base(capacity)
+        protected PoolCollectionDynamic(IContext context, int capacity = 4) : base(capacity)
         {
-            Builder = builder ?? throw new ArgumentNullException(nameof(builder));
             Context = context ?? throw new ArgumentNullException(nameof(context));
-        }
-
-        protected override TItem OnEnable()
-        {
-            if (ExpandAuto && IsExpandRequired())
-            {
-                Expand();
-            }
-
-            return base.OnEnable();
-        }
-
-        protected override void OnDisabled(TItem item)
-        {
-            base.OnDisabled(item);
-
-            if (TrimAuto && IsTrimRequired())
-            {
-                Trim();
-            }
         }
 
         public bool IsExpandRequired()
@@ -62,7 +40,7 @@ namespace UGF.Pool.Runtime
 
             for (int i = 0; i < count; i++)
             {
-                TItem item = Builder.Invoke(Context);
+                TItem item = OnBuild();
 
                 Add(item);
             }
@@ -89,6 +67,31 @@ namespace UGF.Pool.Runtime
                 TItem item = GetAnyDisabled();
 
                 Remove(item);
+
+                OnDestroy(item);
+            }
+        }
+
+        protected abstract TItem OnBuild();
+        protected abstract void OnDestroy(TItem item);
+
+        protected override TItem OnEnable()
+        {
+            if (ExpandAuto && IsExpandRequired())
+            {
+                Expand();
+            }
+
+            return base.OnEnable();
+        }
+
+        protected override void OnDisabled(TItem item)
+        {
+            base.OnDisabled(item);
+
+            if (TrimAuto && IsTrimRequired())
+            {
+                Trim();
             }
         }
     }

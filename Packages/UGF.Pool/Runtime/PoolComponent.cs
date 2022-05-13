@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 
-namespace UGF.Pool.Runtime.GameObjects
+namespace UGF.Pool.Runtime
 {
-    public class GameObjectPoolBehaviour : MonoBehaviour, IPoolObject
+    public class PoolComponent : MonoBehaviour, IPoolObject
     {
         public event Action Enabled;
         public event Action Disabled;
