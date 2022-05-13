@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0-preview.1](https://github.com/unity-game-framework/ugf-pool/releases/tag/2.0.0-preview.1) - 2022-05-13  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-pool/milestone/3?closed=1)  
+    
+
+### Changed
+
+- Add dynamic collection to have build and destroy handlers ([#8](https://github.com/unity-game-framework/ugf-pool/issues/8))  
+    - Add `PoolCollectionDynamicHandlers<T>` class as implementation of dynamic pool with build and destroy handlers.
+    - Change `PoolCollectionDynamic<T>` class to be abstract and have to implement `OnBuild()` and `OnDestroy()` abstract methods to manage item creation.
+    - Change `GameObjectPoolCollection` class to use updated `PoolCollectionDynamic<T>` class with source object.
+    - Change `GameObjectPoolBehaviour` class to `PoolComponent` and moved to upper namespace.
+    - Remove `GameObjectPoolCollectionCycle` class, use `PoolCollectionCycle` class instead.
+
 ## [2.0.0-preview](https://github.com/unity-game-framework/ugf-pool/releases/tag/2.0.0-preview) - 2022-05-08  
 
 ### Release Notes
