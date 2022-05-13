@@ -1,24 +1,26 @@
+using System;
 using UGF.RuntimeTools.Runtime.Contexts;
 using Object = UnityEngine.Object;
 
 namespace UGF.Pool.Runtime.GameObjects
 {
-    public class GameObjectPoolCollection<TItem> : PoolCollectionDynamic<TItem> where TItem : GameObjectPoolBehaviour
+    public class GameObjectPoolCollection<TItem> : PoolCollectionDynamic<TItem> where TItem : PoolComponent
     {
-        public bool DestroyOnRemove { get; set; } = true;
+        public TItem Source { get; }
 
-        public GameObjectPoolCollection(PoolItemBuildHandler<TItem> builder, IContext context, int capacity = 4) : base(builder, context, capacity)
+        public GameObjectPoolCollection(IContext context, TItem source, int capacity = 4) : base(context, capacity)
         {
+            Source = source ? source : throw new ArgumentNullException(nameof(source));
         }
 
-        protected override void OnRemoved(TItem item)
+        protected override TItem OnBuild()
         {
-            base.OnRemoved(item);
+            return Object.Instantiate(Source);
+        }
 
-            if (DestroyOnRemove)
-            {
-                Object.Destroy(item.gameObject);
-            }
+        protected override void OnDestroy(TItem item)
+        {
+            Object.Destroy(item.gameObject);
         }
     }
 }
