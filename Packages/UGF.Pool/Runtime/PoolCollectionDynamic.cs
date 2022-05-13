@@ -3,11 +3,9 @@ using UGF.RuntimeTools.Runtime.Contexts;
 
 namespace UGF.Pool.Runtime
 {
-    public class PoolCollectionDynamic<TItem> : PoolCollection<TItem> where TItem : class
+    public abstract class PoolCollectionDynamic<TItem> : PoolCollection<TItem> where TItem : class
     {
         public IContext Context { get; }
-        public PoolItemBuildHandler<TItem> BuildHandler { get; }
-        public PoolItemDestroyHandler<TItem> DestroyHandler { get; }
         public int DefaultCount { get; set; } = 4;
         public bool ExpandAuto { get; set; } = true;
         public int ExpandCount { get; set; } = 4;
@@ -16,31 +14,9 @@ namespace UGF.Pool.Runtime
         public int TrimCount { get; set; } = 4;
         public int TrimThreshold { get; set; } = 8;
 
-        public PoolCollectionDynamic(IContext context, PoolItemBuildHandler<TItem> buildHandler, PoolItemDestroyHandler<TItem> destroyHandler, int capacity = 4) : base(capacity)
+        protected PoolCollectionDynamic(IContext context, int capacity = 4) : base(capacity)
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
-            BuildHandler = buildHandler ?? throw new ArgumentNullException(nameof(buildHandler));
-            DestroyHandler = destroyHandler ?? throw new ArgumentNullException(nameof(destroyHandler));
-        }
-
-        protected override TItem OnEnable()
-        {
-            if (ExpandAuto && IsExpandRequired())
-            {
-                Expand();
-            }
-
-            return base.OnEnable();
-        }
-
-        protected override void OnDisabled(TItem item)
-        {
-            base.OnDisabled(item);
-
-            if (TrimAuto && IsTrimRequired())
-            {
-                Trim();
-            }
         }
 
         public bool IsExpandRequired()
@@ -64,7 +40,7 @@ namespace UGF.Pool.Runtime
 
             for (int i = 0; i < count; i++)
             {
-                TItem item = BuildHandler.Invoke(Context);
+                TItem item = OnBuild();
 
                 Add(item);
             }
@@ -90,9 +66,32 @@ namespace UGF.Pool.Runtime
             {
                 TItem item = GetAnyDisabled();
 
-                DestroyHandler.Invoke(item, Context);
-
                 Remove(item);
+
+                OnDestroy(item);
+            }
+        }
+
+        protected abstract TItem OnBuild();
+        protected abstract void OnDestroy(TItem item);
+
+        protected override TItem OnEnable()
+        {
+            if (ExpandAuto && IsExpandRequired())
+            {
+                Expand();
+            }
+
+            return base.OnEnable();
+        }
+
+        protected override void OnDisabled(TItem item)
+        {
+            base.OnDisabled(item);
+
+            if (TrimAuto && IsTrimRequired())
+            {
+                Trim();
             }
         }
     }
