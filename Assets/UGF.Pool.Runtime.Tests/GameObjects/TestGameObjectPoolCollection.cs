@@ -1,7 +1,6 @@
 using System.Collections;
 using NUnit.Framework;
 using UGF.Pool.Runtime.GameObjects;
-using UGF.RuntimeTools.Runtime.Contexts;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -12,13 +11,13 @@ namespace UGF.Pool.Runtime.Tests.GameObjects
         [Test]
         public void Enable()
         {
-            var source = new GameObject().AddComponent<GameObjectPoolBehaviour>();
+            var source = new GameObject().AddComponent<PoolComponent>();
 
             source.PoolDisable();
 
-            var pool = new GameObjectPoolCollection<GameObjectPoolBehaviour>(_ => Object.Instantiate(source), new Context());
+            var pool = new GameObjectPoolCollection<PoolComponent>(source);
 
-            GameObjectPoolBehaviour behaviour = pool.Enable();
+            PoolComponent behaviour = pool.Enable();
 
             Assert.NotNull(behaviour);
             Assert.True(behaviour.gameObject.activeSelf);
@@ -27,13 +26,13 @@ namespace UGF.Pool.Runtime.Tests.GameObjects
         [Test]
         public void Disable()
         {
-            var source = new GameObject().AddComponent<GameObjectPoolBehaviour>();
+            var source = new GameObject().AddComponent<PoolComponent>();
 
             source.PoolDisable();
 
-            var pool = new GameObjectPoolCollection<GameObjectPoolBehaviour>(_ => Object.Instantiate(source), new Context());
+            var pool = new GameObjectPoolCollection<PoolComponent>(source);
 
-            GameObjectPoolBehaviour behaviour = pool.Enable();
+            PoolComponent behaviour = pool.Enable();
 
             Assert.NotNull(behaviour);
             Assert.True(behaviour.gameObject.activeSelf);
@@ -47,11 +46,11 @@ namespace UGF.Pool.Runtime.Tests.GameObjects
         [UnityTest]
         public IEnumerator DestroyAll()
         {
-            var source = new GameObject().AddComponent<GameObjectPoolBehaviour>();
+            var source = new GameObject().AddComponent<PoolComponent>();
 
             source.PoolDisable();
 
-            var pool = new GameObjectPoolCollection<GameObjectPoolBehaviour>(_ => Object.Instantiate(source), new Context());
+            var pool = new GameObjectPoolCollection<PoolComponent>(source);
 
             for (int i = 0; i < 10; i++)
             {
