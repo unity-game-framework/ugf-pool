@@ -8,6 +8,10 @@ namespace UGF.Pool.Runtime.GameObjects
     {
         public TItem Source { get; }
 
+        public GameObjectPoolCollection(TItem source, int capacity = 4) : this(new Context(), source, capacity)
+        {
+        }
+
         public GameObjectPoolCollection(IContext context, TItem source, int capacity = 4) : base(context, capacity)
         {
             Source = source ? source : throw new ArgumentNullException(nameof(source));
