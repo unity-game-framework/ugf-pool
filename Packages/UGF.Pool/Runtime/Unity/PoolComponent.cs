@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UGF.Pool.Runtime
+namespace UGF.Pool.Runtime.Unity
 {
     public class PoolComponent : MonoBehaviour, IPoolObject
     {

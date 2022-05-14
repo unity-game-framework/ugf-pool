@@ -1,12 +1,13 @@
 using System.Collections;
 using NUnit.Framework;
-using UGF.Pool.Runtime.GameObjects;
+using UGF.Pool.Runtime.Unity;
+using UGF.RuntimeTools.Runtime.Contexts;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace UGF.Pool.Runtime.Tests.GameObjects
+namespace UGF.Pool.Runtime.Tests.Unity
 {
-    public class TestGameObjectPoolCollection
+    public class TestUnity
     {
         [Test]
         public void Enable()
@@ -15,7 +16,7 @@ namespace UGF.Pool.Runtime.Tests.GameObjects
 
             source.PoolDisable();
 
-            var pool = new GameObjectPoolCollection<PoolComponent>(source);
+            var pool = new PoolCollectionDynamicComponent<PoolComponent>(source, new Context());
 
             PoolComponent behaviour = pool.Enable();
 
@@ -30,7 +31,7 @@ namespace UGF.Pool.Runtime.Tests.GameObjects
 
             source.PoolDisable();
 
-            var pool = new GameObjectPoolCollection<PoolComponent>(source);
+            var pool = new PoolCollectionDynamicComponent<PoolComponent>(source, new Context());
 
             PoolComponent behaviour = pool.Enable();
 
@@ -50,7 +51,7 @@ namespace UGF.Pool.Runtime.Tests.GameObjects
 
             source.PoolDisable();
 
-            var pool = new GameObjectPoolCollection<PoolComponent>(source);
+            var pool = new PoolCollectionDynamicComponent<PoolComponent>(source, new Context());
 
             for (int i = 0; i < 10; i++)
             {
