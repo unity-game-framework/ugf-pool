@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0-preview.2](https://github.com/unity-game-framework/ugf-pool/releases/tag/2.0.0-preview.2) - 2022-05-14  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-pool/milestone/4?closed=1)  
+    
+
+### Added
+
+- Add unity object dynamic collections ([#10](https://github.com/unity-game-framework/ugf-pool/issues/10))  
+    - Add `PoolCollectionDynamicComponent<T>` class as implementation of dynamic collection to work with component attached to gameobject.
+    - Add `PoolCollectionDynamicObject<T>` class as implementation of dynamic collection to work with _Unity_ objects.
+    - Add `PoolCollectionDynamicScriptableObject<T>` class as implementation of dynamic collection to work with _ScriptableObject_ classes.
+    - Change `PoolComponent` class namespace to `UGF.Pool.Runtime.Unity`.
+    - Remove `GameObjectPoolCollection<T>` class, use `PoolCollectionDynamicComponent<T>` instead.
+
 ## [2.0.0-preview.1](https://github.com/unity-game-framework/ugf-pool/releases/tag/2.0.0-preview.1) - 2022-05-13  
 
 ### Release Notes
