@@ -40,7 +40,7 @@ namespace UGF.Pool.Runtime
 
             for (int i = 0; i < count; i++)
             {
-                TItem item = OnBuild();
+                TItem item = Build();
 
                 Add(item);
             }
@@ -67,9 +67,20 @@ namespace UGF.Pool.Runtime
                 TItem item = GetAnyDisabled();
 
                 Remove(item);
-
-                OnDestroy(item);
+                Destroy(item);
             }
+        }
+
+        public TItem Build()
+        {
+            return OnBuild();
+        }
+
+        public void Destroy(TItem item)
+        {
+            if (item == null) throw new ArgumentNullException(nameof(item));
+
+            OnDestroy(item);
         }
 
         protected abstract TItem OnBuild();
