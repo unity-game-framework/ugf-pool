@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0-preview.3](https://github.com/unity-game-framework/ugf-pool/releases/tag/2.0.0-preview.3) - 2022-05-15  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-pool/milestone/5?closed=1)  
+    
+
+### Added
+
+- Add dynamic collection public build and destroy methods ([#14](https://github.com/unity-game-framework/ugf-pool/issues/14))  
+    - Add `PoolCollectionDynamic<T>.Build()` and `Destroy()` methods to build and destroy single items.
+- Add collection events ([#12](https://github.com/unity-game-framework/ugf-pool/issues/12))  
+    - Add `IPoolCollection` and `IPoolCollection<T>` events such as `Added`, `Removed`, `Cleared`, `ItemEnabled` and `ItemDisabled` with implementation for `PoolCollection<T>` class.
+
+### Fixed
+
+- Fix disable execute for added item ([#13](https://github.com/unity-game-framework/ugf-pool/issues/13))  
+    - Fix `PoolCollection.Add()` method to execute `IPoolObject.PoolDisable()` when possible.
+
 ## [2.0.0-preview.2](https://github.com/unity-game-framework/ugf-pool/releases/tag/2.0.0-preview.2) - 2022-05-14  
 
 ### Release Notes
