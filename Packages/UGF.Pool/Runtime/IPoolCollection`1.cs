@@ -7,6 +7,11 @@ namespace UGF.Pool.Runtime
         new IEnumerable<TItem> Enabled { get; }
         new IEnumerable<TItem> Disabled { get; }
 
+        new event PoolItemHandler<TItem> Added;
+        new event PoolItemHandler<TItem> Removed;
+        new event PoolItemHandler<TItem> ItemEnabled;
+        new event PoolItemHandler<TItem> ItemDisabled;
+
         bool Contains(TItem item);
         bool IsEnabled(TItem item);
         bool IsDisabled(TItem item);

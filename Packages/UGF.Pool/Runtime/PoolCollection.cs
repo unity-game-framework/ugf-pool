@@ -12,8 +12,18 @@ namespace UGF.Pool.Runtime
         public IEnumerable<TItem> Enabled { get { return m_enabled; } }
         public IEnumerable<TItem> Disabled { get { return m_disabled; } }
 
+        public event PoolItemHandler<TItem> Added;
+        public event PoolItemHandler<TItem> Removed;
+        public event Action Cleared;
+        public event PoolItemHandler<TItem> ItemEnabled;
+        public event PoolItemHandler<TItem> ItemDisabled;
+
         IEnumerable IPoolCollection.Enabled { get { return m_enabled; } }
         IEnumerable IPoolCollection.Disabled { get { return m_disabled; } }
+        event PoolItemHandler<object> IPoolCollection.Added { add { Added += value; } remove { Added -= value; } }
+        event PoolItemHandler<object> IPoolCollection.Removed { add { Removed += value; } remove { Removed -= value; } }
+        event PoolItemHandler<object> IPoolCollection.ItemEnabled { add { ItemEnabled += value; } remove { ItemEnabled -= value; } }
+        event PoolItemHandler<object> IPoolCollection.ItemDisabled { add { ItemDisabled += value; } remove { ItemDisabled -= value; } }
 
         private readonly HashSet<TItem> m_items;
         private readonly HashSet<TItem> m_enabled;
@@ -70,6 +80,7 @@ namespace UGF.Pool.Runtime
                 }
 
                 OnAdded(item);
+                Added?.Invoke(item);
                 return true;
             }
 
@@ -91,6 +102,7 @@ namespace UGF.Pool.Runtime
                 m_disabled.Remove(item);
 
                 OnRemoved(item);
+                Removed?.Invoke(item);
                 return true;
             }
 
@@ -109,6 +121,8 @@ namespace UGF.Pool.Runtime
             m_disabled.Clear();
 
             OnClear();
+
+            Cleared?.Invoke();
         }
 
         public void EnableAll()
@@ -133,7 +147,11 @@ namespace UGF.Pool.Runtime
 
         public TItem Enable()
         {
-            return OnEnable();
+            TItem item = OnEnable();
+
+            ItemEnabled?.Invoke(item);
+
+            return item;
         }
 
         public bool Disable(TItem item)
@@ -141,7 +159,11 @@ namespace UGF.Pool.Runtime
             if (item == null) throw new ArgumentNullException(nameof(item));
             if (!Contains(item)) throw new ArgumentException($"Specified item not from the current collection: '{item}'.");
 
-            return OnDisable(item);
+            bool result = OnDisable(item);
+
+            ItemDisabled?.Invoke(item);
+
+            return result;
         }
 
         protected virtual void OnAdded(TItem item)
