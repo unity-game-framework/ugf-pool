@@ -13,9 +13,6 @@ namespace UGF.Pool.Runtime.Tests.Unity
         public void Enable()
         {
             var source = new GameObject().AddComponent<PoolComponent>();
-
-            source.PoolDisable();
-
             var pool = new PoolCollectionDynamicComponent<PoolComponent>(source, new Context());
 
             PoolComponent behaviour = pool.Enable();
@@ -28,9 +25,6 @@ namespace UGF.Pool.Runtime.Tests.Unity
         public void Disable()
         {
             var source = new GameObject().AddComponent<PoolComponent>();
-
-            source.PoolDisable();
-
             var pool = new PoolCollectionDynamicComponent<PoolComponent>(source, new Context());
 
             PoolComponent behaviour = pool.Enable();
@@ -48,9 +42,6 @@ namespace UGF.Pool.Runtime.Tests.Unity
         public IEnumerator DestroyAll()
         {
             var source = new GameObject().AddComponent<PoolComponent>();
-
-            source.PoolDisable();
-
             var pool = new PoolCollectionDynamicComponent<PoolComponent>(source, new Context());
 
             for (int i = 0; i < 10; i++)
