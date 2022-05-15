@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 
 namespace UGF.Pool.Runtime
@@ -9,6 +10,12 @@ namespace UGF.Pool.Runtime
         int DisabledCount { get; }
         IEnumerable Enabled { get; }
         IEnumerable Disabled { get; }
+
+        event PoolItemHandler<object> Added;
+        event PoolItemHandler<object> Removed;
+        event Action Cleared;
+        event PoolItemHandler<object> ItemEnabled;
+        event PoolItemHandler<object> ItemDisabled;
 
         bool Contains(object item);
         bool IsEnabled(object item);
