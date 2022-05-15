@@ -64,6 +64,11 @@ namespace UGF.Pool.Runtime
             {
                 m_disabled.Add(item);
 
+                if (item is IPoolObject poolObject)
+                {
+                    poolObject.PoolDisable();
+                }
+
                 OnAdded(item);
                 return true;
             }
