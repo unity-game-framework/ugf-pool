@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace UGF.Pool.Runtime.Unity
 {
+    [AddComponentMenu("Unity Game Framework/Pool/Pool Component", 2000)]
     public class PoolComponent : MonoBehaviour, IPoolObject
     {
         public event Action Enabled;
