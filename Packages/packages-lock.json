@@ -1,18 +1,27 @@
 {
   "dependencies": {
+    "com.ugf.editortools": {
+      "version": "2.11.0",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://unitygameframework.jfrog.io/artifactory/api/npm/default"
+    },
     "com.ugf.pool": {
       "version": "file:UGF.Pool",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.ugf.runtimetools": "2.7.0"
+        "com.ugf.runtimetools": "2.17.0"
       }
     },
     "com.ugf.runtimetools": {
-      "version": "2.7.0",
+      "version": "2.17.0",
       "depth": 1,
       "source": "registry",
-      "dependencies": {},
+      "dependencies": {
+        "com.ugf.editortools": "2.11.0"
+      },
       "url": "https://unitygameframework.jfrog.io/artifactory/api/npm/default"
     },
     "com.unity.ext.nunit": {
