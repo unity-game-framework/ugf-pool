@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0-preview.5](https://github.com/unity-game-framework/ugf-pool/releases/tag/2.0.0-preview.5) - 2022-11-15  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-pool/milestone/7?closed=1)  
+    
+
+### Added
+
+- Add pool component container ([#21](https://github.com/unity-game-framework/ugf-pool/issues/21))  
+    - Update dependencies: `com.ugf.runtimetools` to `2.17.0` version.
+    - Update package _Unity_ version to `2022.1`.
+    - Add `PoolComponent.Container` property to specify reference to the gameobject container.
+    - Add `PoolComponent.ChangeGameObjectActiveState` property to determines whether to change gameobject state on pool enable and disable.
+
 ## [2.0.0-preview.4](https://github.com/unity-game-framework/ugf-pool/releases/tag/2.0.0-preview.4) - 2022-05-16  
 
 ### Release Notes
