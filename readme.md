@@ -4,13 +4,13 @@ UGF.Pool
 
 ## Information
 
-- **Version**: `2.0.0-preview.5`
-- **Unity**: `2022.1`
+- **Version**: `2.0.0`
+- **Unity**: `2022.2`
 - **API Compatibility Level**: `.NET Standard 2.1`
 
 ### Dependencies
 
-- `com.ugf.runtimetools`: `2.17.0`
+- `com.ugf.runtimetools`: `2.18.0`
 
 
 ### Description

@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0](https://github.com/unity-game-framework/ugf-pool/releases/tag/2.0.0) - 2023-01-04  
+
+### Release Notes
+
+- [Milestone](https://github.com/unity-game-framework/ugf-pool/milestone/8?closed=1)  
+    null
+
+### Changed
+
+- Update project ([#23](https://github.com/unity-game-framework/ugf-pool/issues/23))  
+    - Update dependencies: `com.ugf.runtimetools` to `2.18.0` version.
+    - Update package _Unity_ version to `2022.2`.
+
 ## [2.0.0-preview.5](https://github.com/unity-game-framework/ugf-pool/releases/tag/2.0.0-preview.5) - 2022-11-15  
 
 ### Release Notes
