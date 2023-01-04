@@ -19,6 +19,6 @@
     "registry": "https://unitygameframework.jfrog.io/artifactory/api/npm/default"
   },
   "dependencies": {
-    "com.ugf.runtimetools": "2.17.0"
+    "com.ugf.runtimetools": "2.18.0"
   }
 }
